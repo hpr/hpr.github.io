@@ -14,7 +14,7 @@ const Club = ({ club, score, context }: { club: WDItem, score: number, context?:
           {club.labels.en}
         </Typography>
         Score: {score}
-        {context && <p style={{ fontStyle: 'italic' }}>Context: {context?.labels?.en}</p>}
+        {context && <p style={{ fontStyle: 'italic' }}>Context: {context}</p>}
       </CardContent>
       <CardActions>
         <Button size="small">Learn More</Button>
