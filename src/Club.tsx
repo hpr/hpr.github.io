@@ -4,9 +4,9 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
-import { ClubItem } from './types';
+import { WDItem } from './types';
 
-const Club = ({ club, score }: { club: ClubItem, score: number }) => {
+const Club = ({ club, score, context }: { club: WDItem, score: number, context?: any }) => {
   return (
     <Card variant="outlined">
       <CardContent>
@@ -14,6 +14,7 @@ const Club = ({ club, score }: { club: ClubItem, score: number }) => {
           {club.labels.en}
         </Typography>
         Score: {score}
+        {context && <p style={{ fontStyle: 'italic' }}>Context: {context?.labels?.en}</p>}
       </CardContent>
       <CardActions>
         <Button size="small">Learn More</Button>

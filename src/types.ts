@@ -1,11 +1,19 @@
 import { WD } from './constants';
 
-export type ClubItem = {
+type WDProp = typeof WD[keyof typeof WD];
+
+export type WDItem = {
   id: string;
   labels: {
     en: string;
   };
   claims: {
-    [k in typeof WD[keyof typeof WD]]: any[];
+    [k in WDProp]: {
+      value: string;
+      qualifiers: { [k in WDProp]: string[] };
+      references: { [k in WDProp]: string[] }[];
+    }[];
   };
 };
+
+export type WDEntities = { [qid: string]: WDItem };
