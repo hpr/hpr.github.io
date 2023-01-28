@@ -46,3 +46,7 @@ export const getQual = (claim: WDClaim, qualifier: WDProp) => {
 export const getClaim = (entity: WDItem, claim: WDProp) => {
   return (entity.claims[claim] ?? [])[0]?.value;
 };
+
+export const camelToTitle = (str: string) => {
+  return str.replaceAll(/([A-Z])/g, ' $1').trim();
+};

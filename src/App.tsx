@@ -14,7 +14,7 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import { fmtTime, getClaim, getQual, getWDFromStorage } from './util';
+import { camelToTitle, fmtTime, getClaim, getQual, getWDFromStorage } from './util';
 
 type ScoreSettingsType = { [key: string]: any };
 
@@ -33,6 +33,7 @@ const scoreOptions: ScoreOptionType[] = [
     label: 'highest scoring athlete (legal marks)',
     settings: {
       gender: ['male', 'female', 'combined'],
+      excludeRelays: false,
     },
     getScore: (club: WDItem, settings: ScoreSettingsType, athletes: WDEntities, disciplines: WDEntities) => {
       const { maxScore, athId, pbIdx } = club.claims[WD.P_HAS_PARTS].reduce(
@@ -118,11 +119,11 @@ function App() {
               if (Array.isArray(scoreMethod.settings![key])) {
                 return (
                   <FormControl key={key} fullWidth>
-                    <InputLabel>{key[0].toUpperCase() + key.slice(1)}</InputLabel>
+                    <InputLabel>{camelToTitle(key)}</InputLabel>
                     <Select value={scoreSettings[key]} onChange={(e) => setScoreSettings({ ...scoreSettings, [key]: e.target.value })} label={key}>
                       {scoreMethod.settings![key].map((opt: string) => (
                         <MenuItem key={opt} value={opt}>
-                          {opt[0].toUpperCase() + opt.slice(1)}
+                          {camelToTitle(opt)}
                         </MenuItem>
                       ))}
                     </Select>
