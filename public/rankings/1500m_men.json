@@ -1,0 +1,812 @@
+{
+  "query": {
+    "event": "1500m",
+    "sex": "men",
+    "regionType": "world",
+    "page": "1",
+    "rankDate": "2022-06-26",
+    "limitByCountry": "3"
+  },
+  "rankings": [
+    {
+      "Rank": "1",
+      "Competitor": "Jakob INGEBRIGTSEN",
+      "DOB": "19 SEP 2000",
+      "Nat": "NOR",
+      "score": "1483",
+      "EventList": "1500m [1500m ind.,Mile]"
+    },
+    {
+      "Rank": "2",
+      "Competitor": "Timothy CHERUIYOT",
+      "DOB": "20 NOV 1995",
+      "Nat": "KEN",
+      "score": "1461",
+      "EventList": "1500m [Mile]"
+    },
+    {
+      "Rank": "3",
+      "Competitor": "Stewart MCSWEYN",
+      "DOB": "01 JUN 1995",
+      "Nat": "AUS",
+      "score": "1406",
+      "EventList": "1500m [Mile]"
+    },
+    {
+      "Rank": "4",
+      "Competitor": "Abel KIPSANG",
+      "DOB": "27 NOV 1996",
+      "Nat": "KEN",
+      "score": "1403",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "5",
+      "Competitor": "Oliver HOARE",
+      "DOB": "29 JAN 1997",
+      "Nat": "AUS",
+      "score": "1369",
+      "EventList": "1500m [Mile,Mile ind.]"
+    },
+    {
+      "Rank": "6",
+      "Competitor": "Josh KERR",
+      "DOB": "08 OCT 1997",
+      "Nat": "GBR",
+      "score": "1357",
+      "EventList": "1500m [Mile ind.]"
+    },
+    {
+      "Rank": "7",
+      "Competitor": "Mohamed KATIR",
+      "DOB": "17 FEB 1998",
+      "Nat": "ESP",
+      "score": "1341",
+      "EventList": "1500m"
+    },
+    {
+      "Rank": "8",
+      "Competitor": "Adel MECHAAL",
+      "DOB": "05 DEC 1990",
+      "Nat": "ESP",
+      "score": "1328",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "9",
+      "Competitor": "Michał ROZMYS",
+      "DOB": "13 MAR 1995",
+      "Nat": "POL",
+      "score": "1327",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "10",
+      "Competitor": "Charles Cheboi SIMOTWO",
+      "DOB": "05 JUN 1995",
+      "Nat": "KEN",
+      "score": "1320",
+      "EventList": "1500m [Mile]"
+    },
+    {
+      "Rank": "11",
+      "Competitor": "Jake WIGHTMAN",
+      "DOB": "11 JUL 1994",
+      "Nat": "GBR",
+      "score": "1314",
+      "EventList": "1500m [Mile]"
+    },
+    {
+      "Rank": "12",
+      "Competitor": "Jake HEYWARD",
+      "DOB": "26 APR 1999",
+      "Nat": "GBR",
+      "score": "1312",
+      "EventList": "1500m [Mile]"
+    },
+    {
+      "Rank": "13",
+      "Competitor": "Cole HOCKER",
+      "DOB": "06 JUN 2001",
+      "Nat": "USA",
+      "score": "1308",
+      "EventList": "1500m [Mile,Mile ind.]"
+    },
+    {
+      "Rank": "14",
+      "Competitor": "Samuel TEFERA",
+      "DOB": "23 OCT 1999",
+      "Nat": "ETH",
+      "score": "1305",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "15",
+      "Competitor": "Ignacio FONTES",
+      "DOB": "22 JUN 1998",
+      "Nat": "ESP",
+      "score": "1304",
+      "EventList": "1500m [1500m ind.,Mile]"
+    },
+    {
+      "Rank": "16",
+      "Competitor": "Charles GRETHEN",
+      "DOB": "02 JUN 1992",
+      "Nat": "LUX",
+      "score": "1293",
+      "EventList": "1500m [Mile]"
+    },
+    {
+      "Rank": "17",
+      "Competitor": "Teddese LEMI",
+      "DOB": "20 JAN 1999",
+      "Nat": "ETH",
+      "score": "1269",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "18",
+      "Competitor": "Azeddine HABZ",
+      "DOB": "19 JUL 1993",
+      "Nat": "FRA",
+      "score": "1261",
+      "EventList": "1500m [1500m ind.,2000m ind.]"
+    },
+    {
+      "Rank": "19",
+      "Competitor": "Colby ALEXANDER",
+      "DOB": "13 JUN 1991",
+      "Nat": "USA",
+      "score": "1254",
+      "EventList": "1500m [Mile ind.]"
+    },
+    {
+      "Rank": "20",
+      "Competitor": "Abdellatif SADIKI",
+      "DOB": "15 JAN 1999",
+      "Nat": "MAR",
+      "score": "1250",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "21",
+      "Competitor": "Robert FARKEN",
+      "DOB": "20 SEP 1997",
+      "Nat": "GER",
+      "score": "1241",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "22",
+      "Competitor": "Andrew COSCORAN",
+      "DOB": "18 JUN 1996",
+      "Nat": "IRL",
+      "score": "1240",
+      "EventList": "1500m [Mile ind.]"
+    },
+    {
+      "Rank": "23",
+      "Competitor": "Filip SASÍNEK",
+      "DOB": "08 JAN 1996",
+      "Nat": "CZE",
+      "score": "1240",
+      "EventList": "1500m"
+    },
+    {
+      "Rank": "24",
+      "Competitor": "Samuel ZELEKE",
+      "DOB": "09 MAR 1999",
+      "Nat": "ETH",
+      "score": "1237",
+      "EventList": "1500m [Mile,2000m ind.]"
+    },
+    {
+      "Rank": "25",
+      "Competitor": "Samuel TANNER",
+      "DOB": "24 AUG 2000",
+      "Nat": "NZL",
+      "score": "1236",
+      "EventList": "1500m"
+    },
+    {
+      "Rank": "26",
+      "Competitor": "Samuel PRAKEL",
+      "DOB": "29 OCT 1994",
+      "Nat": "USA",
+      "score": "1236",
+      "EventList": "1500m [1500m ind.,Mile ind.]"
+    },
+    {
+      "Rank": "27",
+      "Competitor": "Ismael DEBJANI",
+      "DOB": "25 SEP 1990",
+      "Nat": "BEL",
+      "score": "1234",
+      "EventList": "1500m [1500m ind.,Mile]"
+    },
+    {
+      "Rank": "28",
+      "Competitor": "Pietro ARESE",
+      "DOB": "08 OCT 1999",
+      "Nat": "ITA",
+      "score": "1223",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "29",
+      "Competitor": "Luke MCCANN",
+      "DOB": "12 MAR 1998",
+      "Nat": "IRL",
+      "score": "1218",
+      "EventList": "1500m [Mile,Mile ind.]"
+    },
+    {
+      "Rank": "30",
+      "Competitor": "Charles PHILIBERT-THIBOUTOT",
+      "DOB": "31 DEC 1990",
+      "Nat": "CAN",
+      "score": "1216",
+      "EventList": "1500m [Mile]"
+    },
+    {
+      "Rank": "31",
+      "Competitor": "Ferdinand Kvan EDMAN",
+      "DOB": "12 FEB 1993",
+      "Nat": "NOR",
+      "score": "1215",
+      "EventList": "1500m [1500m ind.,Mile]"
+    },
+    {
+      "Rank": "32",
+      "Competitor": "Simon DENISSEL",
+      "DOB": "22 MAY 1990",
+      "Nat": "FRA",
+      "score": "1210",
+      "EventList": "1500m [2000m ind.]"
+    },
+    {
+      "Rank": "33",
+      "Competitor": "Federico BRUNO",
+      "DOB": "18 JUN 1993",
+      "Nat": "ARG",
+      "score": "1208",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "34",
+      "Competitor": "Adam Ali MUSAB",
+      "DOB": "17 APR 1995",
+      "Nat": "QAT",
+      "score": "1203",
+      "EventList": "1500m [Mile]"
+    },
+    {
+      "Rank": "35",
+      "Competitor": "Matthew RAMSDEN",
+      "DOB": "23 JUL 1997",
+      "Nat": "AUS",
+      "score": "1203",
+      "EventList": "1500m [Mile]"
+    },
+    {
+      "Rank": "36",
+      "Competitor": "Isaac NADER",
+      "DOB": "17 AUG 1999",
+      "Nat": "POR",
+      "score": "1202",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "37",
+      "Competitor": "Ossama MESLEK",
+      "DOB": "08 JAN 1997",
+      "Nat": "ITA",
+      "score": "1201",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "38",
+      "Competitor": "Santiago CATROFE",
+      "DOB": "13 FEB 1999",
+      "Nat": "URU",
+      "score": "1198",
+      "EventList": "1500m"
+    },
+    {
+      "Rank": "39",
+      "Competitor": "Mafori Ryan MPHAHLELE",
+      "DOB": "20 JUN 1998",
+      "Nat": "RSA",
+      "score": "1197",
+      "EventList": "1500m"
+    },
+    {
+      "Rank": "40",
+      "Competitor": "Elhassane MOUJAHID",
+      "DOB": "19 FEB 2000",
+      "Nat": "MAR",
+      "score": "1193",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "41",
+      "Competitor": "István SZÖGI",
+      "DOB": "12 SEP 1995",
+      "Nat": "HUN",
+      "score": "1192",
+      "EventList": "1500m [1500m ind.,2000m ind.]"
+    },
+    {
+      "Rank": "42",
+      "Competitor": "William PAULSON",
+      "DOB": "17 NOV 1994",
+      "Nat": "CAN",
+      "score": "1190",
+      "EventList": "1500m [1500m ind.,Mile]"
+    },
+    {
+      "Rank": "43",
+      "Competitor": "Baptiste MISCHLER",
+      "DOB": "23 NOV 1997",
+      "Nat": "FRA",
+      "score": "1189",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "44",
+      "Competitor": "Christoph KESSLER",
+      "DOB": "28 APR 1995",
+      "Nat": "GER",
+      "score": "1188",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "45",
+      "Competitor": "Cameron PROCEVIAT",
+      "DOB": "20 SEP 1993",
+      "Nat": "CAN",
+      "score": "1187",
+      "EventList": "1500m [1500m ind.,Mile ind.]"
+    },
+    {
+      "Rank": "46",
+      "Competitor": "Ruben VERHEYDEN",
+      "DOB": "22 DEC 2000",
+      "Nat": "BEL",
+      "score": "1186",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "47",
+      "Competitor": "Salim KEDDAR",
+      "DOB": "23 NOV 1993",
+      "Nat": "ALG",
+      "score": "1185",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "48",
+      "Competitor": "Elzan BIBIĆ",
+      "DOB": "08 JAN 1999",
+      "Nat": "SRB",
+      "score": "1183",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "49",
+      "Competitor": "Mohamed MOHUMED",
+      "DOB": "24 MAR 1999",
+      "Nat": "GER",
+      "score": "1181",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "50",
+      "Competitor": "Hicham OULADHA",
+      "DOB": "31 JAN 1995",
+      "Nat": "MAR",
+      "score": "1180",
+      "EventList": "1500m"
+    },
+    {
+      "Rank": "51",
+      "Competitor": "Simas BERTAŠIUS",
+      "DOB": "31 OCT 1993",
+      "Nat": "LTU",
+      "score": "1177",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "52",
+      "Competitor": "Hamish CARSON",
+      "DOB": "01 NOV 1988",
+      "Nat": "NZL",
+      "score": "1177",
+      "EventList": "1500m"
+    },
+    {
+      "Rank": "53",
+      "Competitor": "Johan ROGESTEDT",
+      "DOB": "27 JAN 1993",
+      "Nat": "SWE",
+      "score": "1172",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "54",
+      "Competitor": "Emil DANIELSSON",
+      "DOB": "05 SEP 1997",
+      "Nat": "SWE",
+      "score": "1170",
+      "EventList": "1500m"
+    },
+    {
+      "Rank": "55",
+      "Competitor": "Tarik MOUKRIME",
+      "DOB": "03 MAR 1992",
+      "Nat": "BEL",
+      "score": "1166",
+      "EventList": "1500m"
+    },
+    {
+      "Rank": "56",
+      "Competitor": "Darragh MCELHINNEY",
+      "DOB": "09 NOV 2000",
+      "Nat": "IRL",
+      "score": "1153",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "57",
+      "Competitor": "Samuel PIHLSTRÖM",
+      "DOB": "08 MAR 2001",
+      "Nat": "SWE",
+      "score": "1152",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "58",
+      "Competitor": "Mike FOPPEN",
+      "DOB": "29 NOV 1996",
+      "Nat": "NED",
+      "score": "1141",
+      "EventList": "1500m [1500m ind.,2000m ind.]"
+    },
+    {
+      "Rank": "59",
+      "Competitor": "Guilherme KURTZ",
+      "DOB": "27 AUG 1994",
+      "Nat": "BRA",
+      "score": "1139",
+      "EventList": "1500m"
+    },
+    {
+      "Rank": "60",
+      "Competitor": "Joonas RINNE",
+      "DOB": "20 MAY 1995",
+      "Nat": "FIN",
+      "score": "1137",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "61",
+      "Competitor": "Andrzej KOWALCZYK",
+      "DOB": "30 NOV 1998",
+      "Nat": "POL",
+      "score": "1136",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "62",
+      "Competitor": "Jan FRIŠ",
+      "DOB": "19 DEC 1995",
+      "Nat": "CZE",
+      "score": "1136",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "63",
+      "Competitor": "Ajay Kumar SAROJ",
+      "DOB": "01 MAY 1997",
+      "Nat": "IND",
+      "score": "1135",
+      "EventList": "1500m"
+    },
+    {
+      "Rank": "64",
+      "Competitor": "Mohad ABDIKADAR SHEIK ALI",
+      "DOB": "12 JUN 1993",
+      "Nat": "ITA",
+      "score": "1135",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "65",
+      "Competitor": "David NIKOLLI",
+      "DOB": "20 JUN 1994",
+      "Nat": "ALB",
+      "score": "1135",
+      "EventList": "1500m [1500m ind.,Mile]"
+    },
+    {
+      "Rank": "66",
+      "Competitor": "Nanami ARAI",
+      "DOB": "26 DEC 1994",
+      "Nat": "JPN",
+      "score": "1135",
+      "EventList": "1500m"
+    },
+    {
+      "Rank": "67",
+      "Competitor": "Jerry MOTSAU",
+      "DOB": "12 MAR 1990",
+      "Nat": "RSA",
+      "score": "1133",
+      "EventList": "1500m"
+    },
+    {
+      "Rank": "68",
+      "Competitor": "Ryoji TATEZAWA",
+      "DOB": "16 MAY 1997",
+      "Nat": "JPN",
+      "score": "1130",
+      "EventList": "1500m"
+    },
+    {
+      "Rank": "69",
+      "Competitor": "José ZABALA",
+      "DOB": "05 FEB 1999",
+      "Nat": "ARG",
+      "score": "1129",
+      "EventList": "1500m"
+    },
+    {
+      "Rank": "70",
+      "Competitor": "Martin PRODANOV",
+      "DOB": "16 DEC 1999",
+      "Nat": "BUL",
+      "score": "1128",
+      "EventList": "1500m [Mile ind.]"
+    },
+    {
+      "Rank": "71",
+      "Competitor": "Mohamed AL GARNI",
+      "DOB": "02 JUL 1992",
+      "Nat": "QAT",
+      "score": "1125",
+      "EventList": "1500m"
+    },
+    {
+      "Rank": "72",
+      "Competitor": "Youssouf HISS BACHIR",
+      "DOB": "01 JAN 1987",
+      "Nat": "DJI",
+      "score": "1124",
+      "EventList": "1500m"
+    },
+    {
+      "Rank": "73",
+      "Competitor": "Tim VERBAANDERT",
+      "DOB": "17 JUL 2000",
+      "Nat": "NED",
+      "score": "1124",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "74",
+      "Competitor": "Luis GRIJALVA",
+      "DOB": "10 APR 1999",
+      "Nat": "GUA",
+      "score": "1122",
+      "EventList": "1500m [1500m ind.,Mile]"
+    },
+    {
+      "Rank": "75",
+      "Competitor": "Luca NOTI",
+      "DOB": "22 NOV 1995",
+      "Nat": "SUI",
+      "score": "1122",
+      "EventList": "1500m"
+    },
+    {
+      "Rank": "76",
+      "Competitor": "Gergő KISS",
+      "DOB": "24 JUL 1995",
+      "Nat": "HUN",
+      "score": "1121",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "77",
+      "Competitor": "Keisuke MORITA",
+      "DOB": "19 OCT 1995",
+      "Nat": "JPN",
+      "score": "1121",
+      "EventList": "1500m"
+    },
+    {
+      "Rank": "78",
+      "Competitor": "Abdirahman Saeed HASSAN",
+      "DOB": "13 APR 1997",
+      "Nat": "QAT",
+      "score": "1120",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "79",
+      "Competitor": "Thiago ANDRÉ",
+      "DOB": "04 AUG 1995",
+      "Nat": "BRA",
+      "score": "1116",
+      "EventList": "1500m"
+    },
+    {
+      "Rank": "80",
+      "Competitor": "Noah BALTUS",
+      "DOB": "03 FEB 2002",
+      "Nat": "NED",
+      "score": "1110",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "81",
+      "Competitor": "Esteban GONZÁLEZ",
+      "DOB": "16 OCT 1998",
+      "Nat": "CHI",
+      "score": "1110",
+      "EventList": "1500m"
+    },
+    {
+      "Rank": "82",
+      "Competitor": "Diego Javier LACAMOIRE",
+      "DOB": "09 MAY 1998",
+      "Nat": "ARG",
+      "score": "1106",
+      "EventList": "1500m"
+    },
+    {
+      "Rank": "83",
+      "Competitor": "Julian OAKLEY",
+      "DOB": "23 JUN 1993",
+      "Nat": "NZL",
+      "score": "1106",
+      "EventList": "1500m [Mile]"
+    },
+    {
+      "Rank": "84",
+      "Competitor": "Márton PÁPAI",
+      "DOB": "10 APR 1995",
+      "Nat": "HUN",
+      "score": "1104",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "85",
+      "Competitor": "Nkosinathi SIBIYA",
+      "DOB": "01 JAN 1994",
+      "Nat": "RSA",
+      "score": "1103",
+      "EventList": "1500m [Mile]"
+    },
+    {
+      "Rank": "86",
+      "Competitor": "Lukáš SYMERSKÝ",
+      "DOB": "28 MAR 1998",
+      "Nat": "CZE",
+      "score": "1099",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "87",
+      "Competitor": "Illia KARNAVUKHAU",
+      "DOB": "03 JUL 1999",
+      "Nat": "BLR",
+      "score": "1098",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "88",
+      "Competitor": "Nuno PEREIRA",
+      "DOB": "27 NOV 2000",
+      "Nat": "POR",
+      "score": "1096",
+      "EventList": "1500m"
+    },
+    {
+      "Rank": "89",
+      "Competitor": "Vivien HENZ",
+      "DOB": "24 AUG 2004",
+      "Nat": "LUX",
+      "score": "1096",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "90",
+      "Competitor": "Ali MESSAOUDI",
+      "DOB": "13 OCT 1995",
+      "Nat": "ALG",
+      "score": "1092",
+      "EventList": "1500m"
+    },
+    {
+      "Rank": "91",
+      "Competitor": "Mats HAUGE",
+      "DOB": "16 JUL 1997",
+      "Nat": "NOR",
+      "score": "1092",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "92",
+      "Competitor": "Marino BLOUDEK",
+      "DOB": "18 JUL 1999",
+      "Nat": "CRO",
+      "score": "1089",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "93",
+      "Competitor": "Mohamed Amine DRABLI",
+      "DOB": "21 APR 2000",
+      "Nat": "ALG",
+      "score": "1089",
+      "EventList": "1500m"
+    },
+    {
+      "Rank": "94",
+      "Competitor": "Andreas LINDGREEN",
+      "DOB": "18 FEB 1998",
+      "Nat": "DEN",
+      "score": "1085",
+      "EventList": "1500m"
+    },
+    {
+      "Rank": "95",
+      "Competitor": "Tom ELMER",
+      "DOB": "01 APR 1997",
+      "Nat": "SUI",
+      "score": "1076",
+      "EventList": "1500m"
+    },
+    {
+      "Rank": "96",
+      "Competitor": "Pol MOYA",
+      "DOB": "09 DEC 1996",
+      "Nat": "AND",
+      "score": "1071",
+      "EventList": "1500m [1500m ind.]"
+    },
+    {
+      "Rank": "97",
+      "Competitor": "Christoffer Frost JOHANSEN",
+      "DOB": "14 JAN 1997",
+      "Nat": "DEN",
+      "score": "1070",
+      "EventList": "1500m"
+    },
+    {
+      "Rank": "98",
+      "Competitor": "Diego Ignacio URIBE",
+      "DOB": "11 JUL 1997",
+      "Nat": "CHI",
+      "score": "1067",
+      "EventList": "1500m"
+    },
+    {
+      "Rank": "99",
+      "Competitor": "Ruben QUERINJEAN",
+      "DOB": "22 DEC 2001",
+      "Nat": "LUX",
+      "score": "1065",
+      "EventList": "1500m"
+    },
+    {
+      "Rank": "100",
+      "Competitor": "Santtu HEIKKINEN",
+      "DOB": "12 JUN 2002",
+      "Nat": "FIN",
+      "score": "1062",
+      "EventList": "1500m"
+    }
+  ]
+}
