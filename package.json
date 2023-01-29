@@ -26,6 +26,7 @@
     "fetchRankings": "node --loader ts-node/esm script/fetchRankings.mts",
     "fetchCompetitions": "node --loader ts-node/esm script/fetchCompetitions.mts",
     "fetchResults": "node --loader ts-node/esm script/fetchResults.mts",
+    "simplify": "node --loader ts-node/esm script/simplifyResults.mts",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
