@@ -31,24 +31,27 @@ const App = () => {
   useEffect(() => {
     if (rankings.length) setTargetScore(+rankings[fieldSizes[evt] - 1].score);
   }, [rankings]);
-  let time = '3:40.00';
+  let time = '3:44.00';
   const meetPoints = Object.values(results)
     .filter((x) => x)
     .flatMap((meet) => getScores(meet, evt, sex, time))
-    .sort((a, b) => b.score - a.score);
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 5);
   return (
     <div>
-      <span>Target Score: {targetScore}</span>
-      <div>Top 5:</div>
+      <div>Target Score: {targetScore}</div>
+      <div>1500m PB: {time}</div>
+      <div>Strategic Top 5:</div>
       <ol>
-        {meetPoints.slice(0, 5).map(({ meet, startDate, place, points, score, placeBonus }, i) => {
+        {meetPoints.map(({ meet, startDate, place, points, score, placeBonus }, i) => {
           return (
             <li key={i}>
-              {meet} {startDate}: {place} {points} ({score} + {placeBonus})
+              {meet} {startDate}: {place} place, {score} ({points} + {placeBonus})
             </li>
           );
         })}
       </ol>
+      <div>Average score: {meetPoints.reduce((acc, x) => acc + x.score, 0) / 5}</div>
     </div>
   );
 };

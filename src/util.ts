@@ -25,7 +25,7 @@ export const getScores = (meet: GetCalendarCompetitionResults, evt: EventName, s
     const myEvent = events.find((ev) => ev.event.startsWith(eventPossessive));
     if (!myEvent) continue;
     if (myEvent.event.includes('indoor')) indoor = true;
-    const [heats, semis, finals] = ['Heats', 'Semifinals', 'Finals'].map((round) => myEvent.races.filter((race) => race.race === round));
+    const [heats, semis, finals] = ['Heat', 'Semifinal', 'Final'].map((round) => myEvent.races.filter((race) => race.race === round));
     let qualified = true;
     for (const round of [heats, semis]) {
       if (!round.length) continue;
@@ -35,7 +35,7 @@ export const getScores = (meet: GetCalendarCompetitionResults, evt: EventName, s
         );
       });
       const slowestQualifier = qualifiers.sort((a, b) => markToSecs(a.mark) - markToSecs(b.mark))[0];
-      if (markToSecs(slowestQualifier.mark) < timeSecs) {
+      if (!slowestQualifier || markToSecs(slowestQualifier.mark) < timeSecs) {
         qualified = false;
         // TODO set heatResult here for points
         break;
@@ -43,6 +43,7 @@ export const getScores = (meet: GetCalendarCompetitionResults, evt: EventName, s
     }
     if (!qualified) continue;
     const finalsPerfs = finals.flatMap((race) => race.results);
+    if (!finalsPerfs.length) continue;
     // strategy: filter to all perfs faster than you, then take the maximum place plus one (or 1)
     const place = finalsPerfs.filter((res) => markToSecs(res.mark) < timeSecs).length + 1;
     // TODO eliminate bumped out athletes? handle last place case?
