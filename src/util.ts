@@ -61,6 +61,7 @@ export const getScores = (meet: GetCalendarCompetitionResults, evt: EventName, s
       points,
       placeBonus,
       meet: meet.competition.name,
+      meetId: meet.id,
       startDate: meet.competition.startDate,
     });
   }

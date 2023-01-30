@@ -51,6 +51,7 @@ export type EventTitle = {
 };
 
 export type GetCalendarCompetitionResults = {
+  id: string;
   eventTitles: EventTitle[];
   competition: {
     name: string;
@@ -61,3 +62,19 @@ export type GetCalendarCompetitionResults = {
 };
 
 export type SexName = 'men' | 'women';
+
+export type CompetitionGroup =
+  | 'Area Indoor Championships'
+  | 'Other Senior Area Championships'
+  | 'Area Senior Regional Championships'
+  | 'National Senior Outdoor Championships'
+  | 'Area Senior Outdoor Championships'
+  | 'National Senior Indoor Championships';
+
+export type Area = 'Europe' | 'Oceania' | 'Asia' | 'North and Central America' | 'South America' | 'Africa';
+
+export type CalendarEvent = {
+  id: number;
+  area: Area;
+  competitionGroup: CompetitionGroup;
+};
