@@ -19,8 +19,17 @@ for (const query of rankQueries) {
       await fetch(`https://www.worldathletics.org/world-rankings/${event}/${sex}?` + new URLSearchParams({ regionType, page, rankDate, limitByCountry }))
     ).text()
   );
-  const rankings = [...window.document.querySelectorAll('table.records-table > tbody > tr')].map((tr) =>
-    Object.fromEntries([...tr.querySelectorAll('td')].map((td) => [td.getAttribute('data-th'), td.textContent?.trim()]))
+  const rankings = await Promise.all(
+    [...window.document.querySelectorAll('table.records-table > tbody > tr')].map(async (tr) => ({
+      ...Object.fromEntries([...tr.querySelectorAll('td')].map((td) => [td.getAttribute('data-th'), td.textContent?.trim()])),
+      RankingScoreCalculation: JSON.parse(
+        await (
+          await fetch(
+            `https://www.worldathletics.org/WorldRanking/RankingScoreCalculation?${new URLSearchParams({ competitorId: tr.getAttribute('data-id')! })}`
+          )
+        ).json()
+      ),
+    }))
   );
   fs.writeFileSync(`./public/rankings/${event}_${sex}.json`, JSON.stringify({ query, rankings }, null, 2));
 }

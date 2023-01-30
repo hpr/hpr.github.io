@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { GetCalendarCompetitionResults } from '../src/types';
 
 const queries = [
   {
@@ -7,47 +8,22 @@ const queries = [
   },
 ];
 
-type Competitor = {
-  name: string;
-  birthDate: string;
-  urlSlug: string;
-};
-
-type Result = {
-  mark: string;
-  place: string;
-  points?: string;
-  wind?: string;
-  competitor: Competitor;
-};
-
-type Race = {
-  race: string;
-  raceId: number;
-  raceNumber: number;
-  wind?: string;
-  results: Result[];
-};
-
-type Event = {
-  races: Race[];
-};
-
-type EventTitle = {
-  rankingCategory: string;
-  events: Event[];
-};
-
 for (const query of queries) {
   const { startDate, endDate } = query;
   const input = JSON.parse(fs.readFileSync(`./public/results/${startDate}_${endDate}.json`, 'utf-8'));
   for (const id in input.results) {
     if (!input.results[id]) continue;
-    const eventTitles = input.results[id].data.getCalendarCompetitionResults.eventTitles as EventTitle[];
+    const { competition, eventTitles }: GetCalendarCompetitionResults = input.results[id].data.getCalendarCompetitionResults;
     input.results[id] = {
-      id,
+      competition: {
+        startDate: competition.startDate,
+        endDate: competition.endDate,
+        venue: competition.venue,
+        name: competition.name,
+      },
       eventTitles: eventTitles.map((et) => ({
         rankingCategory: et.rankingCategory,
+        eventTitle: et.eventTitle ?? undefined,
         events: et.events.map((ev) => ({
           ...ev,
           __typename: undefined,

@@ -10,3 +10,12 @@ declare module 'wikibase-sdk' {
   }
   export = WBK;
 }
+
+declare class WaCalculator {
+  constructor(options: { edition: '2022'; gender: 'm' | 'f'; venueType: 'outdoor' | 'indoor'; electronicMeasurement: true; discipline: string }) {}
+  evaluate: (mark: number) => number;
+}
+
+declare module '@glaivepro/wa-calculator' {
+  export { WaCalculator };
+}
