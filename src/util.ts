@@ -1,6 +1,6 @@
-import { EventName, GetCalendarCompetitionResults, SexName } from './types';
+import { CalendarEvent, CompetitionGroup, EventName, FilterGroup, GetCalendarCompetitionResults, SexName } from './types';
 import { WaCalculator } from '@glaivepro/wa-calculator';
-import { placeScoresFinal } from './constants';
+import { filterGroups, placeScoresFinal } from './constants';
 
 export const markToSecs = (mark: string): number => {
   if (mark.includes('(')) mark = mark.slice(0, mark.indexOf('(')).trim();
@@ -13,8 +13,6 @@ export const markToSecs = (mark: string): number => {
   if (groups.length === 3) res = +groups[0] * 60 * 60 + +groups[1] * 60 + +groups[2];
   return Number(String(res!) + (fPart ? '.' + fPart : ''));
 };
-
-export const perfPoints = (mark: string, evt: EventName) => {};
 
 export const getScores = (meet: GetCalendarCompetitionResults, evt: EventName, sex: SexName, time: string) => {
   let indoor = false;
@@ -46,6 +44,7 @@ export const getScores = (meet: GetCalendarCompetitionResults, evt: EventName, s
     if (!finalsPerfs.length) continue;
     // strategy: filter to all perfs faster than you, then take the maximum place plus one (or 1)
     const place = finalsPerfs.filter((res) => markToSecs(res.mark) < timeSecs).length + 1;
+    if (!heats.length && !semis.length && place === finalsPerfs.length) continue; // if you would be slower than last place in a finals-only race, assume you wouldn't be invited
     // TODO eliminate bumped out athletes? handle last place case?
     const points = new WaCalculator({
       edition: '2022',
@@ -61,7 +60,13 @@ export const getScores = (meet: GetCalendarCompetitionResults, evt: EventName, s
       points,
       placeBonus,
       meet: meet.competition.name,
+      meetArea: meet.competition.area,
+      meetVenue: meet.competition.venue,
       meetId: meet.id,
+      meetGroups: Object.keys(filterGroups).filter(
+        (k) => meet.competition.competitionGroups.some((g) => filterGroups[k as FilterGroup].includes(g as CompetitionGroup)) || filterGroups[k as FilterGroup].includes(+meet.id)
+      ),
+      filtered: false,
       startDate: meet.competition.startDate,
     });
   }
@@ -69,12 +74,15 @@ export const getScores = (meet: GetCalendarCompetitionResults, evt: EventName, s
 };
 
 export const ordinal = (number: number) => {
-  return number + {
-    zero: 'th',
-    one: 'st',
-    two: 'nd',
-    few: 'rd',
-    many: '',
-    other: 'th',
-  }[new Intl.PluralRules('en', { type: 'ordinal' }).select(number)];
+  return (
+    number +
+    {
+      zero: 'th',
+      one: 'st',
+      two: 'nd',
+      few: 'rd',
+      many: '',
+      other: 'th',
+    }[new Intl.PluralRules('en', { type: 'ordinal' }).select(number)]
+  );
 };

@@ -60,13 +60,15 @@ export type EventTitle = {
 };
 
 export type GetCalendarCompetitionResults = {
-  id: string;
+  id: number;
   eventTitles: EventTitle[];
   competition: {
     name: string;
     startDate: string;
     endDate: string;
     venue: string;
+    area: Area;
+    competitionGroups: CompetitionGroup[];
   };
 };
 
@@ -78,12 +80,35 @@ export type CompetitionGroup =
   | 'Area Senior Regional Championships'
   | 'National Senior Outdoor Championships'
   | 'Area Senior Outdoor Championships'
-  | 'National Senior Indoor Championships';
+  | 'National Senior Indoor Championships'
+  | 'Area U20 Championships'
+  | 'Area Senior CE Championships'
+  | 'National Senior Outdoor Combined Events Championships'
+  | 'National Senior Road Running Championships'
+  | 'National Senior 10,000m Championships'
+  | 'National Senior Half Marathon Championships'
+  | 'National Senior Marathon Championships'
+  | 'National Senior Outdoor Race Walking Championships'
+  | 'Area Senior Race Walking Championships'
+  | 'Area RR Championships'
+  | 'Area Marathon Championships'
+  | 'National Senior Indoor Combined Events Championships'
+  | 'Area U18 Championships'
+  | 'Area U23 Championships';
 
 export type Area = 'Europe' | 'Oceania' | 'Asia' | 'North and Central America' | 'South America' | 'Africa';
+
+export type FilterGroup =
+  | 'Area Championships'
+  | 'National Championships'
+  | 'National U18 Championships'
+  | 'Area U23 Championships'
+  | 'Area U20 Championships'
+  | 'Area U18 Championships'
+  | 'NCAA Championships';
 
 export type CalendarEvent = {
   id: number;
   area: Area;
-  competitionGroup: CompetitionGroup;
+  competitionGroup: string;
 };
