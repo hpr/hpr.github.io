@@ -105,6 +105,7 @@ export type FilterGroup =
   | 'Area U23 Championships'
   | 'Area U20 Championships'
   | 'Area U18 Championships'
+  | 'DL Final'
   | 'NCAA Championships';
 
 export type CalendarEvent = {

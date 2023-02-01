@@ -180,12 +180,14 @@ export const filterGroups: { [k in FilterGroup]: (CompetitionGroup | number)[] }
     7185863,
     7186148,
     7186560,
+    7181802,
   ],
   'National U18 Championships': [7173137],
   'Area U23 Championships': ['Area U23 Championships', 7184735],
   'Area U20 Championships': ['Area U20 Championships', 7183153],
   'Area U18 Championships': ['Area U18 Championships', 7158240, 7184760],
   'NCAA Championships': [7155001, 7155004],
+  'DL Final': [7147617],
 };
 
 // cat public/results/2021-07-14_2022-06-26_simplified.json | jq -r '.results[].competition.venue' | rev | cut -c 2-4 | sort | uniq | rev

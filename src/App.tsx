@@ -125,7 +125,7 @@ const App = () => {
             ))}
           </Select>
         </FormControl>
-        <TextField variant="outlined" label="Time" value={time} onChange={(e) => markToSecs(time) && setTime(e.target.value)} />
+        <TextField variant="outlined" label="Time" value={time} onChange={(e) => setTime(e.target.value)} />
         <FormControl>
           <InputLabel id="country-label">Nationality</InputLabel>
           <Select labelId="country-label" label="Nationality" value={country} onChange={(e) => setCountry(e.target.value)}>
@@ -212,7 +212,7 @@ const App = () => {
           </Table>
         </TableContainer>
         <Typography variant="h4" sx={{ marginTop: 2 }}>
-          Average score: {averageScore}
+          Average score: {String(averageScore).includes('.') ? String(averageScore).slice(0, String(averageScore).indexOf('.') + 3) : averageScore}
         </Typography>
         <Typography variant="h5" sx={{ marginBottom: 2 }}>
           {averageScore > targetScore ? (
