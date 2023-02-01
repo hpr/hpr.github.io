@@ -2,6 +2,7 @@
   "name": "hpr.github.io",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://hpr.github.io/",
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
@@ -30,6 +31,8 @@
     "fetchCompetitions": "node --loader ts-node/esm script/fetchCompetitions.mts",
     "fetchResults": "node --loader ts-node/esm script/fetchResults.mts",
     "simplify": "node --loader ts-node/esm script/simplifyResults.mts",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
@@ -55,6 +58,7 @@
   },
   "devDependencies": {
     "@craco/craco": "^7.0.0",
-    "@types/jsdom": "^20.0.1"
+    "@types/jsdom": "^20.0.1",
+    "gh-pages": "^5.0.0"
   }
 }
