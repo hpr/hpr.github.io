@@ -6,6 +6,7 @@ export const fieldSizes: { [k in EventName]: number } = {
   '400m': 48,
   '800m': 48,
   '1500m': 45,
+  '5000m': 42,
 };
 
 export const placeScoresFinal = {
@@ -37,4 +38,4 @@ export const areaChampionshipGroups: CompetitionGroup[] = [
 
 export const nationalChampionshipGroups: CompetitionGroup[] = ['National Senior Outdoor Championships', 'National Senior Indoor Championships'];
 
-export const nationalChampionshipOverrideIds = [7175035]; // TODO contact WA to fix these
+export const nationalChampionshipOverrideIds = [7175035, 7187091, 7187328]; // TODO contact WA to fix these

@@ -49,7 +49,7 @@ export const getScores = (meet: GetCalendarCompetitionResults, evt: EventName, s
     // TODO eliminate bumped out athletes? handle last place case?
     const points = new WaCalculator({
       edition: '2022',
-      gender: sex === 'men' ? 'm' : 'f',
+      gender: sex === 'men' ? 'm' : 'w',
       venueType: indoor ? 'indoor' : 'outdoor',
       electronicMeasurement: true,
       discipline: evt,
@@ -66,4 +66,15 @@ export const getScores = (meet: GetCalendarCompetitionResults, evt: EventName, s
     });
   }
   return scores;
+};
+
+export const ordinal = (number: number) => {
+  return number + {
+    zero: 'th',
+    one: 'st',
+    two: 'nd',
+    few: 'rd',
+    many: '',
+    other: 'th',
+  }[new Intl.PluralRules('en', { type: 'ordinal' }).select(number)];
 };

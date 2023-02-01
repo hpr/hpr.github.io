@@ -12,7 +12,7 @@ declare module 'wikibase-sdk' {
 }
 
 declare class WaCalculator {
-  constructor(options: { edition: '2022'; gender: 'm' | 'f'; venueType: 'outdoor' | 'indoor'; electronicMeasurement: true; discipline: string }) {}
+  constructor(options: { edition: '2022'; gender: 'm' | 'w'; venueType: 'outdoor' | 'indoor'; electronicMeasurement: true; discipline: string }) {}
   evaluate: (mark: number) => number;
 }
 

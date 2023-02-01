@@ -1,16 +1,33 @@
-import { Box, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  Link,
+  MenuItem,
+  Paper,
+  Select,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField,
+} from '@mui/material';
+import Grid from '@mui/material/Unstable_Grid2/Grid2';
 import React, { useEffect, useState } from 'react';
 import { areaChampionshipGroups, fieldSizes, nationalChampionshipGroups, nationalChampionshipOverrideIds } from './constants';
-import { CalendarEvent, EventName, GetCalendarCompetitionResults, Ranking, SexName } from './types';
-import { getScores } from './util';
+import { CalendarEvent, EventName, GetCalendarCompetitionResults, Ranking, RankingsQuery, SexName } from './types';
+import { getScores, ordinal } from './util';
 
 const App = () => {
   const [startDate] = useState('2021-07-14');
   const [endDate] = useState('2022-06-26');
   const [evt, setEvt] = useState<EventName>('1500m');
   const [sex, setSex] = useState<SexName>('men');
-  const [time, setTime] = useState<string>('3:45.00');
+  const [time, setTime] = useState<string>('3:43.00');
   const [rankings, setRankings] = useState<Ranking[]>([]);
+  const [rankingsQuery, setRankingsQuery] = useState<RankingsQuery | null>(null);
   const [results, setResults] = useState<{ [meetId: string]: GetCalendarCompetitionResults }>({});
   const [competitions, setCompetitions] = useState<CalendarEvent[]>([]);
   const [targetScore, setTargetScore] = useState(0);
@@ -27,8 +44,9 @@ const App = () => {
   useEffect(
     () =>
       void (async () => {
-        const { rankings } = await (await fetch(`rankings/${evt}_${sex}.json`)).json();
+        const { rankings, query } = await (await fetch(`rankings/${evt}_${sex}.json`)).json();
         setRankings(rankings);
+        setRankingsQuery(query);
       })(),
     [evt, sex]
   );
@@ -60,18 +78,69 @@ const App = () => {
           ))}
         </Select>
       </FormControl>
-      <div>Target Score: {targetScore}</div>
-      <div>{evt} PB: {time}</div>
+      <FormControl sx={{ marginTop: 2 }}>
+        <InputLabel id="sex-label">Sex</InputLabel>
+        <Select labelId="sex-label" label="Sex" value={sex} onChange={(e) => setSex(e.target.value as SexName)}>
+          {['men', 'women'].map((evt) => (
+            <MenuItem key={evt} value={evt}>
+              {evt}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+      <TextField />
+      <div>
+        Target Score:{' '}
+        {rankingsQuery && (
+          <Link
+            href={`https://www.worldathletics.org/world-rankings/${rankingsQuery.event}/${rankingsQuery.sex}?${new URLSearchParams({
+              regionType: rankingsQuery.regionType,
+              page: rankingsQuery.page,
+              rankDate: rankingsQuery.rankDate,
+              limitByCountry: rankingsQuery.limitByCountry,
+            })}`}
+          >
+            {targetScore} (#{fieldSizes[evt]})
+          </Link>
+        )}
+      </div>
+      <div>
+        {evt} PB: {time}
+      </div>
+
       <div>Strategic Top 5:</div>
-      <ol>
-        {meetPoints.map(({ meet, startDate, place, points, score, placeBonus, meetId }, i) => {
-          return (
-            <li key={i}>
-              {meet} {startDate} (#{meetId}): {place} place, {score} ({points} + {placeBonus})
-            </li>
-          );
-        })}
-      </ol>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }}>
+          <TableHead>
+            <TableRow>
+              <TableCell>Meet</TableCell>
+              <TableCell>Start Date</TableCell>
+              <TableCell>Place</TableCell>
+              <TableCell>Score</TableCell>
+              <TableCell>Calculation</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {meetPoints.map(({ meet, startDate, place, points, score, placeBonus, meetId }, i) => {
+              return (
+                <TableRow key={meetId}>
+                  <TableCell>
+                    <Link href={`https://www.worldathletics.org/competition/calendar-results/results/${meetId}`}>
+                      {meet} (#{meetId})
+                    </Link>
+                  </TableCell>
+                  <TableCell>{startDate}</TableCell>
+                  <TableCell>{ordinal(place)}</TableCell>
+                  <TableCell>{score}</TableCell>
+                  <TableCell>
+                    ({points} + {placeBonus})
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
       <div>Average score: {meetPoints.reduce((acc, x) => acc + x.score, 0) / 5}</div>
     </Box>
   );

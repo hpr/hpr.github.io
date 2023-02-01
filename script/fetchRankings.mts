@@ -10,6 +10,46 @@ const rankQueries = [
     rankDate: '2022-06-26',
     limitByCountry: '3',
   },
+  {
+    event: '1500m',
+    sex: 'women',
+    regionType: 'world',
+    page: '1',
+    rankDate: '2022-06-26',
+    limitByCountry: '3',
+  },
+  {
+    event: '800m',
+    sex: 'men',
+    regionType: 'world',
+    page: '1',
+    rankDate: '2022-06-26',
+    limitByCountry: '3',
+  },
+  {
+    event: '800m',
+    sex: 'women',
+    regionType: 'world',
+    page: '1',
+    rankDate: '2022-06-26',
+    limitByCountry: '3',
+  },
+  {
+    event: '5000m',
+    sex: 'men',
+    regionType: 'world',
+    page: '1',
+    rankDate: '2022-06-26',
+    limitByCountry: '3',
+  },
+  {
+    event: '5000m',
+    sex: 'women',
+    regionType: 'world',
+    page: '1',
+    rankDate: '2022-06-26',
+    limitByCountry: '3',
+  },
 ];
 
 for (const query of rankQueries) {

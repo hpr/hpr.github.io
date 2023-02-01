@@ -11,7 +11,16 @@ export type Ranking = {
   };
 };
 
-export type EventName = '100m' | '200m' | '400m' | '800m' | '1500m';
+export type RankingsQuery = {
+  event: EventName;
+  sex: SexName;
+  regionType: 'world';
+  page: '1';
+  rankDate: string;
+  limitByCountry: '3';
+};
+
+export type EventName = '100m' | '200m' | '400m' | '800m' | '1500m' | '5000m';
 
 export type Competitor = {
   name: string;
