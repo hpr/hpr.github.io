@@ -66,7 +66,7 @@ const App = () => {
     setExcludeIds([]);
   }, [evt, sex, time, country]);
   useEffect(() => {
-    const meetInCountry = Object.values(results).find((c) => c.competition.venue.endsWith(`(${country})`));
+    const meetInCountry = Object.values(results).find((c) => c && c.competition.venue.endsWith(`(${country})`));
     setArea(meetInCountry?.competition.area ?? undefined);
   }, [country]);
   useEffect(() => {
