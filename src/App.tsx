@@ -171,48 +171,50 @@ const App = () => {
         </div>
 
         <div>Strategic Top {targetSize}:</div>
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }}>
-            <TableHead>
-              <TableRow>
-                <TableCell>Meet</TableCell>
-                <TableCell>Venue</TableCell>
-                <TableCell>Category</TableCell>
-                <TableCell>Start Date</TableCell>
-                <TableCell>Place</TableCell>
-                <TableCell>Score</TableCell>
-                <TableCell>Calculation</TableCell>
-                <TableCell>Exclude</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {meetsToDisplay.map(({ meet, meetVenue, startDate, place, points, score, placeBonus, meetId, filtered, meetCategory }, i) => {
-                return (
-                  <TableRow key={meetId} sx={{ textDecoration: filtered ? 'line-through' : undefined }}>
-                    <TableCell>
-                      <Link href={`https://www.worldathletics.org/competition/calendar-results/results/${meetId}`}>
-                        {meet} (#{meetId})
-                      </Link>
-                    </TableCell>
-                    <TableCell>{meetVenue}</TableCell>
-                    <TableCell>{meetCategory}</TableCell>
-                    <TableCell>{startDate}</TableCell>
-                    <TableCell>{ordinal(place)}</TableCell>
-                    <TableCell>{score}</TableCell>
-                    <TableCell>
-                      ({points} perf. + {placeBonus} place)
-                    </TableCell>
-                    <TableCell>
-                      <Button onClick={() => setExcludeIds([...excludeIds, meetId])} disabled={filtered}>
-                        Exclude
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center ' }}>
+          <TableContainer component={Paper} sx={{ width: '95%' }}>
+            <Table sx={{ minWidth: 650 }}>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Meet</TableCell>
+                  <TableCell>Venue</TableCell>
+                  <TableCell>Category</TableCell>
+                  <TableCell>Start Date</TableCell>
+                  <TableCell>Place</TableCell>
+                  <TableCell>Score</TableCell>
+                  <TableCell>Calculation</TableCell>
+                  <TableCell>Exclude</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {meetsToDisplay.map(({ meet, meetVenue, startDate, place, points, score, placeBonus, meetId, filtered, meetCategory }, i) => {
+                  return (
+                    <TableRow key={meetId} sx={{ textDecoration: filtered ? 'line-through' : undefined }}>
+                      <TableCell>
+                        <Link href={`https://www.worldathletics.org/competition/calendar-results/results/${meetId}`}>
+                          {meet} (#{meetId})
+                        </Link>
+                      </TableCell>
+                      <TableCell>{meetVenue}</TableCell>
+                      <TableCell>{meetCategory}</TableCell>
+                      <TableCell>{startDate}</TableCell>
+                      <TableCell>{ordinal(place)}</TableCell>
+                      <TableCell>{score}</TableCell>
+                      <TableCell>
+                        ({points} perf. + {placeBonus} place)
+                      </TableCell>
+                      <TableCell>
+                        <Button onClick={() => setExcludeIds([...excludeIds, meetId])} disabled={filtered}>
+                          Exclude
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
         <Typography variant="h4" sx={{ marginTop: 2 }}>
           Average score: {String(averageScore).includes('.') ? String(averageScore).slice(0, String(averageScore).indexOf('.') + 3) : averageScore}
         </Typography>
