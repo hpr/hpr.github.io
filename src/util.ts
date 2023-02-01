@@ -62,6 +62,7 @@ export const getScores = (meet: GetCalendarCompetitionResults, evt: EventName, s
       meet: meet.competition.name,
       meetArea: meet.competition.area,
       meetVenue: meet.competition.venue,
+      meetCategory: rankingCategory,
       meetId: meet.id,
       meetGroups: Object.keys(filterGroups).filter(
         (k) => meet.competition.competitionGroups.some((g) => filterGroups[k as FilterGroup].includes(g as CompetitionGroup)) || filterGroups[k as FilterGroup].includes(+meet.id)

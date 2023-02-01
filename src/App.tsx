@@ -177,6 +177,7 @@ const App = () => {
               <TableRow>
                 <TableCell>Meet</TableCell>
                 <TableCell>Venue</TableCell>
+                <TableCell>Category</TableCell>
                 <TableCell>Start Date</TableCell>
                 <TableCell>Place</TableCell>
                 <TableCell>Score</TableCell>
@@ -185,7 +186,7 @@ const App = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {meetsToDisplay.map(({ meet, meetVenue, startDate, place, points, score, placeBonus, meetId, filtered }, i) => {
+              {meetsToDisplay.map(({ meet, meetVenue, startDate, place, points, score, placeBonus, meetId, filtered, meetCategory }, i) => {
                 return (
                   <TableRow key={meetId} sx={{ textDecoration: filtered ? 'line-through' : undefined }}>
                     <TableCell>
@@ -194,6 +195,7 @@ const App = () => {
                       </Link>
                     </TableCell>
                     <TableCell>{meetVenue}</TableCell>
+                    <TableCell>{meetCategory}</TableCell>
                     <TableCell>{startDate}</TableCell>
                     <TableCell>{ordinal(place)}</TableCell>
                     <TableCell>{score}</TableCell>
