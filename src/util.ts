@@ -20,6 +20,7 @@ export const getScores = (meet: GetCalendarCompetitionResults, evt: EventName, s
   const eventPossessive = `${sex[0].toUpperCase() + sex.slice(1)}'s ${evt}`;
   const scores = [];
   for (const { eventTitle, rankingCategory, events } of meet.eventTitles) {
+    if ((eventTitle ?? '').toLowerCase() === 'split times') continue;
     const myEvent = events.find((ev) => ev.event.startsWith(eventPossessive));
     if (!myEvent) continue;
     if (myEvent.event.includes('indoor')) indoor = true;
