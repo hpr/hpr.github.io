@@ -20,11 +20,10 @@ import {
 } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import Grid from '@mui/material/Unstable_Grid2/Grid2';
 import React, { useEffect, useState } from 'react';
 import { countryCodes, fieldSizes, filterGroups, perfsToAverage } from './constants';
-import { Area, CalendarEvent, CompetitionGroup, EventName, FilterGroup, GetCalendarCompetitionResults, Ranking, RankingsQuery, SexName } from './types';
-import { getMonths, getScores, markToSecs, ordinal } from './util';
+import { Area, EventName, FilterGroup, GetCalendarCompetitionResults, Ranking, RankingsQuery, SexName } from './types';
+import { getMonths, getScores, ordinal } from './util';
 
 const App = () => {
   const [startDate] = useState('2021-07-14');
@@ -34,6 +33,7 @@ const App = () => {
   const [sex, setSex] = useState<SexName>('men');
   const [time, setTime] = useState<string>('3:43.00');
   const [country, setCountry] = useState<string>('USA');
+  const [onlyMeetsInCountry, setOnlyMeetsInCountry] = useState<boolean>(false);
   const [area, setArea] = useState<Area | undefined>('North and Central America');
   const [rankings, setRankings] = useState<Ranking[]>([]);
   const [rankingsQuery, setRankingsQuery] = useState<RankingsQuery | null>(null);
@@ -79,7 +79,11 @@ const App = () => {
     .filter((x) => x)
     .filter(({ competition }) => {
       const endDate = new Date(competition.endDate ?? competition.startDate);
-      return new Date(competition.startDate) >= new Date(startRange) && endDate <= new Date(endRange)
+      return new Date(competition.startDate) >= new Date(startRange) && endDate <= new Date(endRange);
+    })
+    .filter(({ competition }) => {
+      if (onlyMeetsInCountry) return competition.venue.endsWith(`(${country})`);
+      return true;
     })
     .flatMap((meet) => getScores(meet, evt, sex, time))
     .sort((a, b) => b.score - a.score);
@@ -146,7 +150,7 @@ const App = () => {
           <InputLabel id="dateRange-label">Date Range</InputLabel>
           <Select labelId="dateRange-label" label="Date Range" value={dateRange} onChange={(e) => setDateRange(e.target.value)}>
             <MenuItem value={`${startDate}–${endDate}`}>
-              {startDate} – {endDate}
+              2022 Worlds Qualification Period ({startDate} – {endDate})
             </MenuItem>
             {getMonths(new Date(startDate), new Date(endDate)).map((start, i, arr) => {
               if (i === arr.length - 1) return null;
@@ -175,6 +179,10 @@ const App = () => {
               label={`Exclude ${key}`}
             />
           ))}
+          <FormControlLabel
+            control={<Checkbox size="small" value={onlyMeetsInCountry} onChange={(e) => setOnlyMeetsInCountry(e.target.checked)} />}
+            label="Only show meets in country"
+          />
         </div>
         <div>
           <Typography variant="h5" sx={{ marginBottom: 2 }}>
