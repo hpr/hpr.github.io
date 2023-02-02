@@ -107,6 +107,7 @@ const App = () => {
     meetsToDisplay.push(meet);
   }
 
+  const qualifyingPerformances = meetsToDisplay.filter(x => !x.filtered).length;
   const averageScore = meetsToDisplay.reduce((acc, x) => acc + (x.filtered ? 0 : x.score), 0) / targetSize;
 
   return (
@@ -248,10 +249,10 @@ const App = () => {
           </TableContainer>
         </div>
         <Typography variant="h4" sx={{ marginTop: 2 }}>
-          Average score: {String(averageScore).includes('.') ? String(averageScore).slice(0, String(averageScore).indexOf('.') + 3) : averageScore}
+          Average score: {qualifyingPerformances < targetSize ? 'Not enough meets' : String(averageScore).includes('.') ? String(averageScore).slice(0, String(averageScore).indexOf('.') + 3) : averageScore}
         </Typography>
         <Typography variant="h5" sx={{ marginBottom: 2 }}>
-          {averageScore > targetScore ? (
+          {averageScore > targetScore && qualifyingPerformances >= targetSize ? (
             <>
               <CheckCircleIcon /> Qualified
             </>
