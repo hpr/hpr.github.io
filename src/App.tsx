@@ -31,7 +31,7 @@ const App = () => {
   const [dateRange, setDateRange] = useState('2021-07-14–2022-06-26');
   const [evt, setEvt] = useState<EventName>('1500m');
   const [sex, setSex] = useState<SexName>('men');
-  const [time, setTime] = useState<string>('3:43.00');
+  const [time, setTime] = useState<string>('3:42.73');
   const [country, setCountry] = useState<string>('USA');
   const [onlyMeetsInCountry, setOnlyMeetsInCountry] = useState<boolean>(false);
   const [area, setArea] = useState<Area | undefined>('North and Central America');
