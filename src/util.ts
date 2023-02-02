@@ -66,7 +66,9 @@ export const getScores = (meet: GetCalendarCompetitionResults, evt: EventName, s
       meetCategory: rankingCategory,
       meetId: meet.id,
       meetGroups: Object.keys(filterGroups).filter(
-        (k) => meet.competition.competitionGroups.some((g) => filterGroups[k as FilterGroup].includes(g as CompetitionGroup)) || filterGroups[k as FilterGroup].includes(+meet.id)
+        (k) =>
+          meet.competition.competitionGroups.some((g) => filterGroups[k as FilterGroup].includes(g as CompetitionGroup)) ||
+          filterGroups[k as FilterGroup].includes(+meet.id)
       ),
       filtered: false,
       startDate: meet.competition.startDate,
@@ -87,4 +89,26 @@ export const ordinal = (number: number) => {
       other: 'th',
     }[new Intl.PluralRules('en', { type: 'ordinal' }).select(number)]
   );
+};
+
+export const getMonths = (fromDate: Date, toDate: Date) => {
+  const fromYear = fromDate.getFullYear();
+  const fromMonth = fromDate.getMonth();
+  const toYear = toDate.getFullYear();
+  const toMonth = toDate.getMonth();
+  const months: string[] = [];
+
+  for (let year = fromYear; year <= toYear; year++) {
+    let monthNum = year === fromYear ? fromMonth : 0;
+    const monthLimit = year === toYear ? toMonth : 11;
+
+    for (; monthNum <= monthLimit; monthNum++) {
+      const month = monthNum + 1;
+      let day = '01';
+      if (year === fromYear && month === fromMonth) day = String(fromDate.getDate()).padStart(2, '0');
+      if (year === toYear && month === toMonth) day = String(toDate.getDate()).padStart(2, '0');
+      months.push(`${year}-${String(month).padStart(2, '0')}-${day}`);
+    }
+  }
+  return months;
 };

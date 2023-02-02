@@ -24,11 +24,12 @@ import Grid from '@mui/material/Unstable_Grid2/Grid2';
 import React, { useEffect, useState } from 'react';
 import { countryCodes, fieldSizes, filterGroups, perfsToAverage } from './constants';
 import { Area, CalendarEvent, CompetitionGroup, EventName, FilterGroup, GetCalendarCompetitionResults, Ranking, RankingsQuery, SexName } from './types';
-import { getScores, markToSecs, ordinal } from './util';
+import { getMonths, getScores, markToSecs, ordinal } from './util';
 
 const App = () => {
   const [startDate] = useState('2021-07-14');
   const [endDate] = useState('2022-06-26');
+  const [dateRange, setDateRange] = useState('2021-07-14–2022-06-26');
   const [evt, setEvt] = useState<EventName>('1500m');
   const [sex, setSex] = useState<SexName>('men');
   const [time, setTime] = useState<string>('3:43.00');
@@ -64,7 +65,7 @@ const App = () => {
   );
   useEffect(() => {
     setExcludeIds([]);
-  }, [evt, sex, time, country]);
+  }, [evt, sex, time, country, dateRange]);
   useEffect(() => {
     const meetInCountry = Object.values(results).find((c) => c && c.competition.venue.endsWith(`(${country})`));
     setArea(meetInCountry?.competition.area ?? undefined);
@@ -73,8 +74,13 @@ const App = () => {
     if (rankings.length) setTargetScore(+rankings[fieldSizes[evt] - 1].score);
   }, [rankings]);
 
+  const [startRange, endRange] = dateRange.split('–');
   const meetScores = Object.values(results)
     .filter((x) => x)
+    .filter(({ competition }) => {
+      const endDate = new Date(competition.endDate ?? competition.startDate);
+      return new Date(competition.startDate) >= new Date(startRange) && endDate <= new Date(endRange)
+    })
     .flatMap((meet) => getScores(meet, evt, sex, time))
     .sort((a, b) => b.score - a.score);
 
@@ -136,6 +142,24 @@ const App = () => {
             ))}
           </Select>
         </FormControl>
+        <FormControl>
+          <InputLabel id="dateRange-label">Date Range</InputLabel>
+          <Select labelId="dateRange-label" label="Date Range" value={dateRange} onChange={(e) => setDateRange(e.target.value)}>
+            <MenuItem value={`${startDate}–${endDate}`}>
+              {startDate} – {endDate}
+            </MenuItem>
+            {getMonths(new Date(startDate), new Date(endDate)).map((start, i, arr) => {
+              if (i === arr.length - 1) return null;
+              const end = arr[i + 1];
+              const range = `${start}–${end}`;
+              return (
+                <MenuItem key={range} value={range}>
+                  {start} – {end}
+                </MenuItem>
+              );
+            })}
+          </Select>
+        </FormControl>
         <div>
           {Object.keys(filterGroups).map((key) => (
             <FormControlLabel
@@ -189,7 +213,7 @@ const App = () => {
               <TableBody>
                 {meetsToDisplay.map(({ meet, meetVenue, startDate, place, points, score, placeBonus, meetId, filtered, meetCategory }, i) => {
                   return (
-                    <TableRow key={meetId} sx={{ textDecoration: filtered ? 'line-through' : undefined }}>
+                    <TableRow key={`${meetId}-${i}`} sx={{ textDecoration: filtered ? 'line-through' : undefined }}>
                       <TableCell>
                         <Link href={`https://www.worldathletics.org/competition/calendar-results/results/${meetId}`}>
                           {meet} (#{meetId})
