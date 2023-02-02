@@ -182,7 +182,7 @@ const App = () => {
           ))}
           <FormControlLabel
             control={<Checkbox size="small" value={onlyMeetsInCountry} onChange={(e) => setOnlyMeetsInCountry(e.target.checked)} />}
-            label="Only show meets in country"
+            label="Only show meets in nationality country"
           />
         </div>
         <div>
