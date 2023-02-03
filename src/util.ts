@@ -135,11 +135,11 @@ export const getMonths = (fromDate: Date, toDate: Date) => {
   return months;
 };
 
-export const getSimilarMarks = (evt: EventName, sex: SexName, mark: string): SimilarMarks => {
+export const getSimilarMarks = (evt: EventName, sex: SexName, mark: string, generousConversion: boolean = false): SimilarMarks => {
   const score = new WaCalculator({
     edition: '2022',
     gender: sex === 'men' ? 'm' : 'w',
-    venueType: 'outdoor',
+    venueType: generousConversion ? 'indoor' : 'outdoor',
     electronicMeasurement: true,
     discipline: evt,
   }).evaluate(markToSecs(mark));

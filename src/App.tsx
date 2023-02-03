@@ -38,6 +38,7 @@ const App = () => {
   const [includeSimilarMarks, setIncludeSimilarMarks] = useState<boolean>(true);
   const [similarMarks, setSimilarMarks] = useState<SimilarMarks>({});
   const [showExcludedMeets, setShowExcludedMeets] = useState<boolean>(false);
+  const [generousConversion] = useState<boolean>(false);
   const [area, setArea] = useState<Area | undefined>('North and Central America');
   const [rankings, setRankings] = useState<Ranking[]>([]);
   const [rankingsQuery, setRankingsQuery] = useState<RankingsQuery | null>(null);
@@ -60,8 +61,8 @@ const App = () => {
     [startDate, endDate]
   );
   useEffect(() => {
-    setSimilarMarks(getSimilarMarks(evt, sex, time));
-  }, [evt, sex, time]);
+    setSimilarMarks(getSimilarMarks(evt, sex, time, generousConversion));
+  }, [evt, sex, time, generousConversion]);
   useEffect(() => {
     setMeetScores(
       Object.values(results)
@@ -97,7 +98,8 @@ const App = () => {
   const meetsToDisplay = [];
   const targetSize = perfsToAverage[evt]!;
   let numValidMeets = 0;
-  for (const meet of meetScores) {
+  for (let meet of meetScores) {
+    meet = structuredClone(meet);
     if (numValidMeets === targetSize) break;
     const { meetGroups, meetArea, meetVenue, meetId } = meet;
     if (excludeIds.includes(meetId)) meet.filtered = 'Manual';
@@ -105,7 +107,7 @@ const App = () => {
     for (const key in filterChecks) {
       if (filterChecks[key as FilterGroup] && meetGroups.includes(key)) {
         if (key.includes('Area') && area === meetArea) continue;
-        if ((key.includes('National') || key === 'NCAA Championships') && meetVenue.endsWith(`(${country})`)) continue;
+        if (key.includes('National') && meetVenue.endsWith(`(${country})`)) continue;
         meet.filtered = key;
         break;
       }
@@ -198,6 +200,10 @@ const App = () => {
               .map((evt) => `${similarMarks[evt as EventName]!} ${evt}`)
               .join(', ')})`}
           />
+          {/* <FormControlLabel
+            control={<Checkbox size="small" defaultChecked value={generousConversion} onChange={(e) => setGenerousConversion(e.target.checked)} />}
+            label="Use more generous conversion for similar marks"
+          /> */}
           <FormControlLabel
             control={<Checkbox size="small" value={showExcludedMeets} onChange={(e) => setShowExcludedMeets(e.target.checked)} />}
             label="Show excluded meets in table"
