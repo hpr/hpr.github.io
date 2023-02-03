@@ -29,6 +29,7 @@ const App = () => {
   const [startDate] = useState('2021-07-14');
   const [endDate] = useState('2022-06-26');
   const [dateRange, setDateRange] = useState('2021-07-14–2022-06-26');
+  const [startRange, endRange] = dateRange.split('–');
   const [evt, setEvt] = useState<EventName>('1500m');
   const [sex, setSex] = useState<SexName>('men');
   const [time, setTime] = useState<string>('3:41.28');
@@ -56,7 +57,7 @@ const App = () => {
         // const { competitions } = await (await fetch(`competitions/${startDate}_${endDate}.json`)).json();
         // setCompetitions(competitions.data.getCalendarEvents.results);
       })(),
-    []
+    [startDate, endDate]
   );
   useEffect(() => {
     setSimilarMarks(getSimilarMarks(evt, sex, time));
@@ -69,14 +70,10 @@ const App = () => {
           const endDate = new Date(competition.endDate ?? competition.startDate);
           return new Date(competition.startDate) >= new Date(startRange) && endDate <= new Date(endRange);
         })
-        .filter(({ competition }) => {
-          if (onlyMeetsInCountry) return competition.venue.endsWith(`(${country})`);
-          return true;
-        })
         .flatMap((meet) => getScores(meet, { [evt]: time, ...similarMarks }, sex))
         .sort((a, b) => b.score - a.score)
     );
-  }, [evt, sex, time, country, dateRange, results, similarMarks]);
+  }, [evt, sex, time, country, dateRange, results, similarMarks, startRange, endRange]);
   useEffect(
     () =>
       void (async () => {
@@ -92,12 +89,11 @@ const App = () => {
   useEffect(() => {
     const meetInCountry = Object.values(results).find((c) => c && c.competition.venue.endsWith(`(${country})`));
     setArea(meetInCountry?.competition.area ?? undefined);
-  }, [country]);
+  }, [country, results]);
   useEffect(() => {
     if (rankings.length) setTargetScore(+rankings[fieldSizes[evt]! - 1].score);
-  }, [rankings]);
+  }, [rankings, evt]);
 
-  const [startRange, endRange] = dateRange.split('–');
   const meetsToDisplay = [];
   const targetSize = perfsToAverage[evt]!;
   let numValidMeets = 0;
@@ -105,6 +101,7 @@ const App = () => {
     if (numValidMeets === targetSize) break;
     const { meetGroups, meetArea, meetVenue, meetId } = meet;
     if (excludeIds.includes(meetId)) meet.filtered = 'Manual';
+    if (onlyMeetsInCountry && meet.meetVenue.endsWith(`(${country})`)) meet.filtered = 'Out of country';
     for (const key in filterChecks) {
       if (filterChecks[key as FilterGroup] && meetGroups.includes(key)) {
         if (key.includes('Area') && area === meetArea) continue;
