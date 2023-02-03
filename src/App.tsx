@@ -258,7 +258,7 @@ const App = () => {
                         <TableCell>{ordinal(place)}</TableCell>
                         <TableCell>{score}</TableCell>
                         <TableCell>
-                          {points} + {placeBonus}
+                          {points} perf. + {placeBonus} place
                         </TableCell>
                         <TableCell>
                           {filtered ? (
