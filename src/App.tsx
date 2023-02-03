@@ -38,7 +38,7 @@ const App = () => {
   const [includeSimilarMarks, setIncludeSimilarMarks] = useState<boolean>(true);
   const [similarMarks, setSimilarMarks] = useState<SimilarMarks>({});
   const [showExcludedMeets, setShowExcludedMeets] = useState<boolean>(false);
-  const [generousConversion] = useState<boolean>(false);
+  const [generousConversion, setGenerousConversion] = useState<boolean>(false);
   const [area, setArea] = useState<Area | undefined>('North and Central America');
   const [rankings, setRankings] = useState<Ranking[]>([]);
   const [rankingsQuery, setRankingsQuery] = useState<RankingsQuery | null>(null);
@@ -200,10 +200,10 @@ const App = () => {
               .map((evt) => `${similarMarks[evt as EventName]!} ${evt}`)
               .join(', ')})`}
           />
-          {/* <FormControlLabel
-            control={<Checkbox size="small" defaultChecked value={generousConversion} onChange={(e) => setGenerousConversion(e.target.checked)} />}
+          <FormControlLabel
+            control={<Checkbox size="small" value={generousConversion} onChange={(e) => setGenerousConversion(e.target.checked)} />}
             label="Use more generous conversion for similar marks"
-          /> */}
+          />
           <FormControlLabel
             control={<Checkbox size="small" value={showExcludedMeets} onChange={(e) => setShowExcludedMeets(e.target.checked)} />}
             label="Show excluded meets in table"

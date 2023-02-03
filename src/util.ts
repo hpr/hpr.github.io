@@ -143,8 +143,18 @@ export const getSimilarMarks = (evt: EventName, sex: SexName, mark: string, gene
     electronicMeasurement: true,
     discipline: evt,
   }).evaluate(markToSecs(mark));
+  const scoreForMile = generousConversion
+    ? new WaCalculator({
+        edition: '2022',
+        gender: sex === 'men' ? 'm' : 'w',
+        venueType: 'outdoor',
+        electronicMeasurement: true,
+        discipline: evt,
+      }).evaluate(markToSecs(mark))
+    : score;
   const similarMarks: SimilarMarks = {};
   for (const similarEvt of similarEvents[evt] ?? []) {
+    const targetScore = similarEvt === 'Mile' ? scoreForMile : score;
     const calc = new WaCalculator({
       edition: '2022',
       gender: sex === 'men' ? 'm' : 'w',
@@ -156,13 +166,13 @@ export const getSimilarMarks = (evt: EventName, sex: SexName, mark: string, gene
     let similarSecs = 120;
     let iterations = 0;
     const iterationLimit = 10000;
-    while (similarScore !== score) {
+    while (similarScore !== targetScore) {
       if (iterations++ > iterationLimit) break;
-      const diff = Math.abs(similarScore - score);
+      const diff = Math.abs(similarScore - targetScore);
       let delta = 1;
       if (diff < 1000) delta = 0.1;
       if (diff < 100) delta = 0.01;
-      if (similarScore < score) similarSecs -= delta;
+      if (similarScore < targetScore) similarSecs -= delta;
       else similarSecs += delta;
       similarScore = calc.evaluate(similarSecs) ?? 0;
     }
