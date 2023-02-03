@@ -16,7 +16,7 @@ export const markToSecs = (mark: string): number => {
 
 export const secsToMark = (secs: number): string => {
   secs = Math.round(secs * 100) / 100;
-  const fPart = String(secs).includes('.') ? '.' + String(secs).split('.')[1].slice(0, 2).padEnd(2, '0') : '.00'; 
+  const fPart = String(secs).includes('.') ? '.' + String(secs).split('.')[1].slice(0, 2).padEnd(2, '0') : '.00';
   if (secs < 60) return String(Math.floor(secs)) + fPart;
   const h = Math.floor(secs / (60 * 60));
   const m = Math.floor((secs - 60 * 60 * h) / 60);
@@ -30,19 +30,19 @@ export const secsToMark = (secs: number): string => {
 export const evtToWaCalculatorDiscipline = (evt: EventName): string => {
   if (evt in waCalculatorDisciplines) return waCalculatorDisciplines[evt]!;
   return evt;
-}
+};
 
 export const getScores = (meet: GetCalendarCompetitionResults, times: { [k in EventName]?: string }, sex: SexName) => {
   const timeSecs = Object.fromEntries(Object.keys(times).map((evt) => [evt, markToSecs(times[evt as EventName]!)]));
   const genderPossessive = `${sex[0].toUpperCase() + sex.slice(1)}'s`;
-  const eventPossessives = Object.keys(times).map((evt) => `${genderPossessive} ${evt}`);
+  const eventPossessives = Object.keys(times).flatMap((evt) => [`${genderPossessive} ${evt}`, `${genderPossessive} ${evt} indoor`]);
   const scores = [];
   for (const { eventTitle, rankingCategory, events } of meet.eventTitles) {
     if ((eventTitle ?? '').toLowerCase() === 'split times') continue;
-    const myEvents = events.filter((ev) => eventPossessives.some((eventPossessive) => ev.event.startsWith(eventPossessive)));
+    const myEvents = events.filter((ev) => eventPossessives.some((eventPossessive) => ev.event === eventPossessive));
     if (!myEvents.length) continue;
     for (const myEvent of myEvents) {
-      const evt: EventName = myEvent.event.split(genderPossessive)[1].trim() as EventName;
+      const evt: EventName = myEvent.event.split(genderPossessive)[1].replace('indoor', '').trim() as EventName;
       const [heats, semis, finals] = ['Heat', 'Semifinal', 'Final'].map((round) => myEvent.races.filter((race) => race.race === round));
       let qualified = true;
       for (const round of [heats, semis]) {
