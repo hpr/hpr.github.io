@@ -1,6 +1,6 @@
 import { CompetitionGroup, EventName, FilterGroup } from './types';
 
-export const fieldSizes: { [k in EventName]: number } = {
+export const fieldSizes: { [k in EventName]?: number } = {
   '100m': 48,
   '200m': 56,
   '400m': 48,
@@ -9,13 +9,24 @@ export const fieldSizes: { [k in EventName]: number } = {
   '5000m': 42,
 };
 
-export const perfsToAverage: { [k in EventName]: number } = {
+export const perfsToAverage: { [k in EventName]?: number } = {
   '100m': 5,
   '200m': 5,
   '400m': 5,
   '800m': 5,
   '1500m': 5,
   '5000m': 3,
+};
+
+export const similarEvents: { [k in EventName]?: EventName[] } = {
+  '800m': ['600m', '1000m'],
+  '1500m': ['Mile', '2000m'],
+  '5000m': ['3000m', '2 miles'],
+};
+
+export const waCalculatorDisciplines: { [k in EventName]?: string } = {
+  '2 miles': '2miles',
+  'Mile': '1mile',
 };
 
 export const placeScoresFinal = {

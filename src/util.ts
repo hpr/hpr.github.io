@@ -1,6 +1,6 @@
-import { CalendarEvent, CompetitionGroup, EventName, FilterGroup, GetCalendarCompetitionResults, SexName } from './types';
+import { CompetitionGroup, EventName, FilterGroup, GetCalendarCompetitionResults, SexName, SimilarMarks } from './types';
 import { WaCalculator } from '@glaivepro/wa-calculator';
-import { filterGroups, placeScoresFinal } from './constants';
+import { filterGroups, placeScoresFinal, similarEvents, waCalculatorDisciplines } from './constants';
 
 export const markToSecs = (mark: string): number => {
   if (mark.includes('(')) mark = mark.slice(0, mark.indexOf('(')).trim();
@@ -14,65 +14,87 @@ export const markToSecs = (mark: string): number => {
   return Number(String(res!) + (fPart ? '.' + fPart : ''));
 };
 
-export const getScores = (meet: GetCalendarCompetitionResults, evt: EventName, sex: SexName, time: string) => {
-  let indoor = false;
-  const timeSecs = markToSecs(time);
-  const eventPossessive = `${sex[0].toUpperCase() + sex.slice(1)}'s ${evt}`;
+export const secsToMark = (secs: number): string => {
+  secs = Math.round(secs * 100) / 100;
+  const fPart = String(secs).includes('.') ? '.' + String(secs).split('.')[1].slice(0, 2).padEnd(2, '0') : '.00'; 
+  if (secs < 60) return String(Math.floor(secs)) + fPart;
+  const h = Math.floor(secs / (60 * 60));
+  const m = Math.floor((secs - 60 * 60 * h) / 60);
+  const s = secs - (60 * 60 * h + 60 * m);
+  const stringSecs = String(Math.floor(s)).padStart(2, '0') + fPart;
+  if (h) return String(h) + ':' + String(m).padStart(2, '0') + ':' + stringSecs;
+  if (m) return String(m) + ':' + stringSecs;
+  return stringSecs;
+};
+
+export const evtToWaCalculatorDiscipline = (evt: EventName): string => {
+  if (evt in waCalculatorDisciplines) return waCalculatorDisciplines[evt]!;
+  return evt;
+}
+
+export const getScores = (meet: GetCalendarCompetitionResults, times: { [k in EventName]?: string }, sex: SexName) => {
+  const timeSecs = Object.fromEntries(Object.keys(times).map((evt) => [evt, markToSecs(times[evt as EventName]!)]));
+  const genderPossessive = `${sex[0].toUpperCase() + sex.slice(1)}'s`;
+  const eventPossessives = Object.keys(times).map((evt) => `${genderPossessive} ${evt}`);
   const scores = [];
   for (const { eventTitle, rankingCategory, events } of meet.eventTitles) {
     if ((eventTitle ?? '').toLowerCase() === 'split times') continue;
-    const myEvent = events.find((ev) => ev.event.startsWith(eventPossessive));
-    if (!myEvent) continue;
-    if (myEvent.event.includes('indoor')) indoor = true;
-    const [heats, semis, finals] = ['Heat', 'Semifinal', 'Final'].map((round) => myEvent.races.filter((race) => race.race === round));
-    let qualified = true;
-    for (const round of [heats, semis]) {
-      if (!round.length) continue;
-      const qualifiers = round.flatMap((race) => {
-        return race.results.filter((result) =>
-          finals.find((finalRace) => finalRace.results.find((finalRes) => finalRes.competitor.name === result.competitor.name))
-        );
-      });
-      const slowestQualifier = qualifiers.sort((a, b) => markToSecs(a.mark) - markToSecs(b.mark))[0];
-      if (!slowestQualifier || markToSecs(slowestQualifier.mark) < timeSecs) {
-        qualified = false;
-        // TODO set heatResult here for points
-        break;
+    const myEvents = events.filter((ev) => eventPossessives.some((eventPossessive) => ev.event.startsWith(eventPossessive)));
+    if (!myEvents.length) continue;
+    for (const myEvent of myEvents) {
+      const evt: EventName = myEvent.event.split(genderPossessive)[1].trim() as EventName;
+      const [heats, semis, finals] = ['Heat', 'Semifinal', 'Final'].map((round) => myEvent.races.filter((race) => race.race === round));
+      let qualified = true;
+      for (const round of [heats, semis]) {
+        if (!round.length) continue;
+        const qualifiers = round.flatMap((race) => {
+          return race.results.filter((result) =>
+            finals.find((finalRace) => finalRace.results.find((finalRes) => finalRes.competitor.name === result.competitor.name))
+          );
+        });
+        const slowestQualifier = qualifiers.sort((a, b) => markToSecs(a.mark) - markToSecs(b.mark))[0];
+        if (!slowestQualifier || markToSecs(slowestQualifier.mark) < timeSecs[evt]) {
+          qualified = false;
+          // TODO set heatResult here for points
+          break;
+        }
       }
+      if (!qualified) continue;
+      const finalsPerfs = finals.flatMap((race) => race.results);
+      if (!finalsPerfs.length) continue;
+      // strategy: filter to all perfs faster than you, then take the maximum place plus one (or 1)
+      const place = finalsPerfs.filter((res) => markToSecs(res.mark) < timeSecs[evt]).length + 1;
+      if (!heats.length && !semis.length && place === finalsPerfs.length) continue; // if you would be slower than last place in a finals-only race, assume you wouldn't be invited
+      // TODO eliminate bumped out athletes? handle last place case?
+      const points = new WaCalculator({
+        edition: '2022',
+        gender: sex === 'men' ? 'm' : 'w',
+        venueType: myEvent.event.includes('indoor') ? 'indoor' : 'outdoor',
+        electronicMeasurement: true,
+        discipline: evtToWaCalculatorDiscipline(evt),
+      }).evaluate(timeSecs[evt]);
+      const placeBonus = placeScoresFinal[rankingCategory][place - 1] ?? 0;
+      scores.push({
+        score: points + placeBonus,
+        event: evt,
+        mark: times[evt],
+        place,
+        points,
+        placeBonus,
+        meet: meet.competition.name,
+        meetArea: meet.competition.area,
+        meetVenue: meet.competition.venue,
+        meetCategory: rankingCategory,
+        meetId: meet.id,
+        meetGroups: Object.keys(filterGroups).filter(
+          (k) =>
+            meet.competition.competitionGroups.some((g) => filterGroups[k as FilterGroup].includes(g as CompetitionGroup)) ||
+            filterGroups[k as FilterGroup].includes(+meet.id)
+        ),
+        filtered: false as boolean | string,
+        startDate: meet.competition.startDate,
+      });
     }
-    if (!qualified) continue;
-    const finalsPerfs = finals.flatMap((race) => race.results);
-    if (!finalsPerfs.length) continue;
-    // strategy: filter to all perfs faster than you, then take the maximum place plus one (or 1)
-    const place = finalsPerfs.filter((res) => markToSecs(res.mark) < timeSecs).length + 1;
-    if (!heats.length && !semis.length && place === finalsPerfs.length) continue; // if you would be slower than last place in a finals-only race, assume you wouldn't be invited
-    // TODO eliminate bumped out athletes? handle last place case?
-    const points = new WaCalculator({
-      edition: '2022',
-      gender: sex === 'men' ? 'm' : 'w',
-      venueType: indoor ? 'indoor' : 'outdoor',
-      electronicMeasurement: true,
-      discipline: evt,
-    }).evaluate(timeSecs);
-    const placeBonus = placeScoresFinal[rankingCategory][place - 1] ?? 0;
-    scores.push({
-      score: points + placeBonus,
-      place,
-      points,
-      placeBonus,
-      meet: meet.competition.name,
-      meetArea: meet.competition.area,
-      meetVenue: meet.competition.venue,
-      meetCategory: rankingCategory,
-      meetId: meet.id,
-      meetGroups: Object.keys(filterGroups).filter(
-        (k) =>
-          meet.competition.competitionGroups.some((g) => filterGroups[k as FilterGroup].includes(g as CompetitionGroup)) ||
-          filterGroups[k as FilterGroup].includes(+meet.id)
-      ),
-      filtered: false,
-      startDate: meet.competition.startDate,
-    });
   }
   return scores;
 };
@@ -111,4 +133,41 @@ export const getMonths = (fromDate: Date, toDate: Date) => {
     }
   }
   return months;
+};
+
+export const getSimilarMarks = (evt: EventName, sex: SexName, mark: string): SimilarMarks => {
+  const score = new WaCalculator({
+    edition: '2022',
+    gender: sex === 'men' ? 'm' : 'w',
+    venueType: 'outdoor',
+    electronicMeasurement: true,
+    discipline: evt,
+  }).evaluate(markToSecs(mark));
+  const similarMarks: SimilarMarks = {};
+  for (const similarEvt of similarEvents[evt] ?? []) {
+    const calc = new WaCalculator({
+      edition: '2022',
+      gender: sex === 'men' ? 'm' : 'w',
+      venueType: 'outdoor',
+      electronicMeasurement: true,
+      discipline: evtToWaCalculatorDiscipline(similarEvt as EventName),
+    });
+    let similarScore = 0;
+    let similarSecs = 120;
+    let iterations = 0;
+    const iterationLimit = 10000;
+    while (similarScore !== score) {
+      if (iterations++ > iterationLimit) break;
+      const diff = Math.abs(similarScore - score);
+      let delta = 1;
+      if (diff < 1000) delta = 0.1;
+      if (diff < 100) delta = 0.01;
+      if (similarScore < score) similarSecs -= delta;
+      else similarSecs += delta;
+      similarScore = calc.evaluate(similarSecs) ?? 0;
+    }
+    if (iterations > iterationLimit) continue;
+    similarMarks[similarEvt as EventName] = secsToMark(similarSecs);
+  }
+  return similarMarks;
 };

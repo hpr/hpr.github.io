@@ -22,8 +22,8 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import React, { useEffect, useState } from 'react';
 import { countryCodes, fieldSizes, filterGroups, perfsToAverage } from './constants';
-import { Area, EventName, FilterGroup, GetCalendarCompetitionResults, Ranking, RankingsQuery, SexName } from './types';
-import { getMonths, getScores, ordinal } from './util';
+import { Area, EventName, FilterGroup, GetCalendarCompetitionResults, Ranking, RankingsQuery, SexName, SimilarMarks } from './types';
+import { getMonths, getScores, getSimilarMarks, ordinal } from './util';
 
 const App = () => {
   const [startDate] = useState('2021-07-14');
@@ -31,17 +31,21 @@ const App = () => {
   const [dateRange, setDateRange] = useState('2021-07-14–2022-06-26');
   const [evt, setEvt] = useState<EventName>('1500m');
   const [sex, setSex] = useState<SexName>('men');
-  const [time, setTime] = useState<string>('3:42.73');
+  const [time, setTime] = useState<string>('3:41.28');
   const [country, setCountry] = useState<string>('USA');
   const [onlyMeetsInCountry, setOnlyMeetsInCountry] = useState<boolean>(false);
+  const [includeSimilarMarks, setIncludeSimilarMarks] = useState<boolean>(true);
+  const [similarMarks, setSimilarMarks] = useState<SimilarMarks>({});
+  const [showExcludedMeets, setShowExcludedMeets] = useState<boolean>(false);
   const [area, setArea] = useState<Area | undefined>('North and Central America');
   const [rankings, setRankings] = useState<Ranking[]>([]);
   const [rankingsQuery, setRankingsQuery] = useState<RankingsQuery | null>(null);
   const [results, setResults] = useState<{ [meetId: string]: GetCalendarCompetitionResults }>({});
   const [excludeIds, setExcludeIds] = useState<number[]>([]);
+  const [meetScores, setMeetScores] = useState<ReturnType<typeof getScores>>([]);
   // const [competitions, setCompetitions] = useState<CalendarEvent[]>([]);
   const [filterChecks, setFilterChecks] = useState<{ [k in FilterGroup]: boolean }>(
-    Object.fromEntries(Object.keys(filterGroups).map((key) => [key, true])) as { [k in FilterGroup]: boolean }
+    () => Object.fromEntries(Object.keys(filterGroups).map((key) => [key, true])) as { [k in FilterGroup]: boolean }
   );
   const [targetScore, setTargetScore] = useState(0);
   useEffect(
@@ -54,6 +58,25 @@ const App = () => {
       })(),
     []
   );
+  useEffect(() => {
+    setSimilarMarks(getSimilarMarks(evt, sex, time));
+  }, [evt, sex, time]);
+  useEffect(() => {
+    setMeetScores(
+      Object.values(results)
+        .filter((x) => x)
+        .filter(({ competition }) => {
+          const endDate = new Date(competition.endDate ?? competition.startDate);
+          return new Date(competition.startDate) >= new Date(startRange) && endDate <= new Date(endRange);
+        })
+        .filter(({ competition }) => {
+          if (onlyMeetsInCountry) return competition.venue.endsWith(`(${country})`);
+          return true;
+        })
+        .flatMap((meet) => getScores(meet, { [evt]: time, ...similarMarks }, sex))
+        .sort((a, b) => b.score - a.score)
+    );
+  }, [evt, sex, time, country, dateRange, results, similarMarks]);
   useEffect(
     () =>
       void (async () => {
@@ -71,43 +94,31 @@ const App = () => {
     setArea(meetInCountry?.competition.area ?? undefined);
   }, [country]);
   useEffect(() => {
-    if (rankings.length) setTargetScore(+rankings[fieldSizes[evt] - 1].score);
+    if (rankings.length) setTargetScore(+rankings[fieldSizes[evt]! - 1].score);
   }, [rankings]);
 
   const [startRange, endRange] = dateRange.split('–');
-  const meetScores = Object.values(results)
-    .filter((x) => x)
-    .filter(({ competition }) => {
-      const endDate = new Date(competition.endDate ?? competition.startDate);
-      return new Date(competition.startDate) >= new Date(startRange) && endDate <= new Date(endRange);
-    })
-    .filter(({ competition }) => {
-      if (onlyMeetsInCountry) return competition.venue.endsWith(`(${country})`);
-      return true;
-    })
-    .flatMap((meet) => getScores(meet, evt, sex, time))
-    .sort((a, b) => b.score - a.score);
-
   const meetsToDisplay = [];
-  const targetSize = perfsToAverage[evt];
+  const targetSize = perfsToAverage[evt]!;
   let numValidMeets = 0;
   for (const meet of meetScores) {
     if (numValidMeets === targetSize) break;
     const { meetGroups, meetArea, meetVenue, meetId } = meet;
-    if (excludeIds.includes(meetId)) meet.filtered = true;
+    if (excludeIds.includes(meetId)) meet.filtered = 'Manual';
     for (const key in filterChecks) {
       if (filterChecks[key as FilterGroup] && meetGroups.includes(key)) {
         if (key.includes('Area') && area === meetArea) continue;
         if ((key.includes('National') || key === 'NCAA Championships') && meetVenue.endsWith(`(${country})`)) continue;
-        meet.filtered = true;
+        meet.filtered = key;
         break;
       }
     }
+    if (meet.event !== evt && !includeSimilarMarks) meet.filtered = 'Similar mark';
     if (!meet.filtered) numValidMeets++;
     meetsToDisplay.push(meet);
   }
 
-  const qualifyingPerformances = meetsToDisplay.filter(x => !x.filtered).length;
+  const qualifyingPerformances = meetsToDisplay.filter((x) => !x.filtered).length;
   const averageScore = meetsToDisplay.reduce((acc, x) => acc + (x.filtered ? 0 : x.score), 0) / targetSize;
 
   return (
@@ -184,6 +195,16 @@ const App = () => {
             control={<Checkbox size="small" value={onlyMeetsInCountry} onChange={(e) => setOnlyMeetsInCountry(e.target.checked)} />}
             label="Only show meets in nationality country"
           />
+          <FormControlLabel
+            control={<Checkbox size="small" defaultChecked value={includeSimilarMarks} onChange={(e) => setIncludeSimilarMarks(e.target.checked)} />}
+            label={`Include similar marks (${Object.keys(similarMarks)
+              .map((evt) => `${similarMarks[evt as EventName]!} ${evt}`)
+              .join(', ')})`}
+          />
+          <FormControlLabel
+            control={<Checkbox size="small" value={showExcludedMeets} onChange={(e) => setShowExcludedMeets(e.target.checked)} />}
+            label="Show excluded meets in table"
+          />
         </div>
         <div>
           <Typography variant="h5" sx={{ marginBottom: 2 }}>
@@ -204,52 +225,67 @@ const App = () => {
         </div>
 
         <div>Strategic Top {targetSize}:</div>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center ' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <TableContainer component={Paper} sx={{ width: '95%' }}>
-            <Table sx={{ minWidth: 650 }}>
+            <Table sx={{ minWidth: 650 }} size="small">
               <TableHead>
                 <TableRow>
                   <TableCell>Meet</TableCell>
                   <TableCell>Venue</TableCell>
                   <TableCell>Category</TableCell>
                   <TableCell>Start Date</TableCell>
+                  <TableCell>Event</TableCell>
+                  <TableCell>Time</TableCell>
                   <TableCell>Place</TableCell>
                   <TableCell>Score</TableCell>
                   <TableCell>Calculation</TableCell>
-                  <TableCell>Exclude</TableCell>
+                  <TableCell>Exclude (Reason)</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {meetsToDisplay.map(({ meet, meetVenue, startDate, place, points, score, placeBonus, meetId, filtered, meetCategory }, i) => {
-                  return (
-                    <TableRow key={`${meetId}-${i}`} sx={{ textDecoration: filtered ? 'line-through' : undefined }}>
-                      <TableCell>
-                        <Link href={`https://www.worldathletics.org/competition/calendar-results/results/${meetId}`}>
-                          {meet} (#{meetId})
-                        </Link>
-                      </TableCell>
-                      <TableCell>{meetVenue}</TableCell>
-                      <TableCell>{meetCategory}</TableCell>
-                      <TableCell>{startDate}</TableCell>
-                      <TableCell>{ordinal(place)}</TableCell>
-                      <TableCell>{score}</TableCell>
-                      <TableCell>
-                        ({points} perf. + {placeBonus} place)
-                      </TableCell>
-                      <TableCell>
-                        <Button onClick={() => setExcludeIds([...excludeIds, meetId])} disabled={filtered}>
-                          Exclude
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
+                {meetsToDisplay
+                  .filter((m) => (showExcludedMeets ? true : !m.filtered))
+                  .map(({ meet, meetVenue, startDate, place, points, score, placeBonus, meetId, filtered, meetCategory, event, mark }, i) => {
+                    return (
+                      <TableRow key={`${meetId}-${i}`} sx={{ backgroundColor: filtered ? 'pink' : undefined }}>
+                        <TableCell>
+                          <Link href={`https://www.worldathletics.org/competition/calendar-results/results/${meetId}`}>
+                            {meet} (#{meetId})
+                          </Link>
+                        </TableCell>
+                        <TableCell>{meetVenue}</TableCell>
+                        <TableCell>{meetCategory}</TableCell>
+                        <TableCell>{startDate}</TableCell>
+                        <TableCell>{event}</TableCell>
+                        <TableCell>{mark}</TableCell>
+                        <TableCell>{ordinal(place)}</TableCell>
+                        <TableCell>{score}</TableCell>
+                        <TableCell>
+                          {points} + {placeBonus}
+                        </TableCell>
+                        <TableCell>
+                          {filtered ? (
+                            filtered
+                          ) : (
+                            <Button size="small" onClick={() => setExcludeIds([...excludeIds, meetId])} disabled={!!filtered}>
+                              Exclude
+                            </Button>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
               </TableBody>
             </Table>
           </TableContainer>
         </div>
         <Typography variant="h4" sx={{ marginTop: 2 }}>
-          Average score: {qualifyingPerformances < targetSize ? 'Not enough meets' : String(averageScore).includes('.') ? String(averageScore).slice(0, String(averageScore).indexOf('.') + 3) : averageScore}
+          Average score:{' '}
+          {qualifyingPerformances < targetSize
+            ? 'Not enough meets'
+            : String(averageScore).includes('.')
+            ? String(averageScore).slice(0, String(averageScore).indexOf('.') + 3)
+            : averageScore}
         </Typography>
         <Typography variant="h5" sx={{ marginBottom: 2 }}>
           {averageScore > targetScore && qualifyingPerformances >= targetSize ? (

@@ -20,7 +20,7 @@ export type RankingsQuery = {
   limitByCountry: '3';
 };
 
-export type EventName = '100m' | '200m' | '400m' | '800m' | '1500m' | '5000m';
+export type EventName = '100m' | '200m' | '400m' | '800m' | '1500m' | '5000m' | '600m' | '1000m' | 'Mile' | '2000m' | '3000m' | '2 miles';
 
 export type Competitor = {
   name: string;
@@ -113,3 +113,5 @@ export type CalendarEvent = {
   area: Area;
   competitionGroup: string;
 };
+
+export type SimilarMarks = { [k in EventName]?: string };
