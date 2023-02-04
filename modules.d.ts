@@ -1,21 +1,14 @@
-declare module 'wikibase-sdk' {
-  function WBK({ instance: string, sparqlEndpoint: string }) {
-    return {
-      simplify: {
-        entities: (object, options?: { keepIds?: boolean; keepReferences?: boolean; keepQualifiers?: boolean }) => any,
-      },
-      getEntities: (entities: string[] | string): string => {},
-      getManyEntities: (entities: string[] | string): string[] => {},
-    };
-  }
-  export = WBK;
-}
+type WaCalculatorOptions = { edition: '2022'; gender: 'm' | 'w'; venueType: 'outdoor' | 'indoor'; electronicMeasurement: true; discipline: string };
 
 declare class WaCalculator {
-  constructor(options: { edition: '2022'; gender: 'm' | 'w'; venueType: 'outdoor' | 'indoor'; electronicMeasurement: true; discipline: string }) {}
+  constructor(options: WaCalculatorOptions) {
+    this.options = options;
+  }
   evaluate: (mark: number) => number;
 }
 
 declare module '@glaivepro/wa-calculator' {
   export { WaCalculator };
 }
+
+declare module 'wikibase-sdk';

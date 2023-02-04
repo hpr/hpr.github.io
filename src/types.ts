@@ -67,6 +67,7 @@ export type GetCalendarCompetitionResults = {
     startDate: string;
     endDate: string;
     venue: string;
+    altitude: number;
     area: Area;
     competitionGroups: CompetitionGroup[];
   };

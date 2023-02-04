@@ -25,6 +25,13 @@ import { countryCodes, fieldSizes, filterGroups, perfsToAverage } from './consta
 import { Area, EventName, FilterGroup, GetCalendarCompetitionResults, Ranking, RankingsQuery, SexName, SimilarMarks } from './types';
 import { getMonths, getScores, getSimilarMarks, ordinal } from './util';
 
+// import WBK from 'wikibase-sdk';
+// const wbk = WBK({
+//   instance: 'https://www.wikidata.org',
+//   sparqlEndpoint: 'https://query.wikidata.org/sparql',
+// });
+// console.log(wbk);
+
 const App = () => {
   const [startDate] = useState('2021-07-14');
   const [endDate] = useState('2022-06-26');
@@ -240,6 +247,7 @@ const App = () => {
                   <TableCell>Event</TableCell>
                   <TableCell>Time</TableCell>
                   <TableCell>Place</TableCell>
+                  <TableCell>Altitude</TableCell>
                   <TableCell>Score</TableCell>
                   <TableCell>Calculation</TableCell>
                   <TableCell>Exclude (Reason)</TableCell>
@@ -248,7 +256,7 @@ const App = () => {
               <TableBody>
                 {meetsToDisplay
                   .filter((m) => (showExcludedMeets ? true : !m.filtered))
-                  .map(({ meet, meetVenue, startDate, place, points, score, placeBonus, meetId, filtered, meetCategory, event, mark }, i) => {
+                  .map(({ meet, meetVenue, startDate, place, points, score, placeBonus, meetId, filtered, meetCategory, event, mark, altitude }, i) => {
                     return (
                       <TableRow key={`${meetId}-${i}`} sx={{ backgroundColor: filtered ? 'pink' : undefined }}>
                         <TableCell>
@@ -262,6 +270,7 @@ const App = () => {
                         <TableCell>{event}</TableCell>
                         <TableCell>{mark}</TableCell>
                         <TableCell>{ordinal(place)}</TableCell>
+                        <TableCell>{altitude}</TableCell>
                         <TableCell>{score}</TableCell>
                         <TableCell>
                           {points} perf. + {placeBonus} place

@@ -26,7 +26,7 @@ export const similarEvents: { [k in EventName]?: EventName[] } = {
 
 export const waCalculatorDisciplines: { [k in EventName]?: string } = {
   '2 miles': '2miles',
-  'Mile': '1mile',
+  Mile: '1mile',
 };
 
 export const placeScoresFinal = {
