@@ -316,7 +316,7 @@ const App = () => {
           )}
         </Typography>
         <div>
-          Contact: <Link href="mailto:habs@sdf.org">habs@sdf.org</Link>
+          Contact: Harry Prevor, <Link href="mailto:habs@sdf.org">habs@sdf.org</Link>
         </div>
       </Box>
     </div>
