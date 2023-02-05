@@ -46,6 +46,7 @@ const App = () => {
   const [similarMarks, setSimilarMarks] = useState<SimilarMarks>({});
   const [showExcludedMeets, setShowExcludedMeets] = useState<boolean>(false);
   const [generousConversion, setGenerousConversion] = useState<boolean>(false);
+  const [altitudeConversion, setAltitudeConversion] = useState<boolean>(false);
   const [area, setArea] = useState<Area | undefined>('North and Central America');
   const [rankings, setRankings] = useState<Ranking[]>([]);
   const [rankingsQuery, setRankingsQuery] = useState<RankingsQuery | null>(null);
@@ -78,10 +79,10 @@ const App = () => {
           const endDate = new Date(competition.endDate ?? competition.startDate);
           return new Date(competition.startDate) >= new Date(startRange) && endDate <= new Date(endRange);
         })
-        .flatMap((meet) => getScores(meet, { [evt]: time, ...similarMarks }, sex))
+        .flatMap((meet) => getScores(meet, { [evt]: time, ...similarMarks }, sex, altitudeConversion))
         .sort((a, b) => b.score - a.score)
     );
-  }, [evt, sex, time, country, dateRange, results, similarMarks, startRange, endRange]);
+  }, [evt, sex, time, country, dateRange, results, similarMarks, startRange, endRange, altitudeConversion]);
   useEffect(
     () =>
       void (async () => {
@@ -212,6 +213,10 @@ const App = () => {
             label="Use more generous conversion for similar marks"
           />
           <FormControlLabel
+            control={<Checkbox size="small" value={altitudeConversion} onChange={(e) => setAltitudeConversion(e.target.checked)} />}
+            label="Altitude-adjust performances"
+          />
+          <FormControlLabel
             control={<Checkbox size="small" value={showExcludedMeets} onChange={(e) => setShowExcludedMeets(e.target.checked)} />}
             label="Show excluded meets in table"
           />
@@ -270,7 +275,7 @@ const App = () => {
                         <TableCell>{event}</TableCell>
                         <TableCell>{mark}</TableCell>
                         <TableCell>{ordinal(place)}</TableCell>
-                        <TableCell>{altitude}</TableCell>
+                        <TableCell>{altitude && `${altitude} m`}</TableCell>
                         <TableCell>{score}</TableCell>
                         <TableCell>
                           {points} perf. + {placeBonus} place

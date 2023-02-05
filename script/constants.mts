@@ -7,6 +7,11 @@ export const WD = {
   Q_US_STATE: 'Q35657',
   Q_METRE: 'Q11573',
   Q_UNITED_STATES_OF_AMERICA: 'Q30',
+  Q_CITY: 'Q515',
+  Q_TOWN: 'Q3957',
+  Q_LARGE_VILLAGE: 'Q26714626',
+  Q_VILLAGE: 'Q532',
+  Q_HAMLET: 'Q5084',
 };
 
 export const getCalendarCompetitionResults_query = `query getCalendarCompetitionResults($competitionId: Int, $day: Int, $eventId: Int) {

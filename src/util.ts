@@ -1,6 +1,7 @@
 import { CompetitionGroup, EventName, FilterGroup, GetCalendarCompetitionResults, SexName, SimilarMarks } from './types';
 import { WaCalculator } from '@glaivepro/wa-calculator';
-import { filterGroups, placeScoresFinal, similarEvents, waCalculatorDisciplines } from './constants';
+import { evtDistance, filterGroups, placeScoresFinal, similarEvents, waCalculatorDisciplines } from './constants';
+import { altitudeConvert } from 'tinman-altitude-conversion-calculator';
 
 export const markToSecs = (mark: string): number => {
   if (mark.includes('(')) mark = mark.slice(0, mark.indexOf('(')).trim();
@@ -32,8 +33,30 @@ export const evtToWaCalculatorDiscipline = (evt: EventName): string => {
   return evt;
 };
 
-export const getScores = (meet: GetCalendarCompetitionResults, times: { [k in EventName]?: string }, sex: SexName) => {
-  const timeSecs = Object.fromEntries(Object.keys(times).map((evt) => [evt, markToSecs(times[evt as EventName]!)]));
+export const reverseAltitudeConvert = (distanceInMeters: number, altitudeInFeet: number, targetConvertedTime: number) => {
+  if (altitudeInFeet === 0) return targetConvertedTime;
+  let guessTime = targetConvertedTime;
+  let convertedTime = 0;
+  while (Math.abs(convertedTime - targetConvertedTime) > 0.01) {
+    convertedTime = altitudeConvert(distanceInMeters, altitudeInFeet, guessTime);
+    const diff = Math.abs(convertedTime - targetConvertedTime);
+    let delta = 0.01;
+    if (diff > 10) delta = 1;
+    if (convertedTime < targetConvertedTime) guessTime += delta;
+    else guessTime -= delta;
+  }
+  return guessTime;
+};
+
+export const getScores = (meet: GetCalendarCompetitionResults, times: { [k in EventName]?: string }, sex: SexName, altitudeConversion: boolean) => {
+  const timeSecs = Object.fromEntries(
+    Object.keys(times).map((evt) => [
+      evt,
+      altitudeConversion
+        ? reverseAltitudeConvert(evtDistance[evt as EventName], metresToFeet(meet.competition.altitude ?? 0), markToSecs(times[evt as EventName]!))
+        : markToSecs(times[evt as EventName]!),
+    ])
+  );
   const genderPossessive = `${sex[0].toUpperCase() + sex.slice(1)}'s`;
   const eventPossessives = Object.keys(times).flatMap((evt) => [`${genderPossessive} ${evt}`, `${genderPossessive} ${evt} indoor`]);
   const scores = [];
@@ -77,7 +100,7 @@ export const getScores = (meet: GetCalendarCompetitionResults, times: { [k in Ev
       scores.push({
         score: points + placeBonus,
         event: evt,
-        mark: times[evt],
+        mark: secsToMark(timeSecs[evt]),
         place,
         points,
         placeBonus,
@@ -181,4 +204,8 @@ export const getSimilarMarks = (evt: EventName, sex: SexName, mark: string, gene
     similarMarks[similarEvt as EventName] = secsToMark(similarSecs);
   }
   return similarMarks;
+};
+
+export const metresToFeet = (metres: number) => {
+  return metres * 3.28084;
 };

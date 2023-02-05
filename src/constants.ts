@@ -18,6 +18,21 @@ export const perfsToAverage: { [k in EventName]?: number } = {
   '5000m': 3,
 };
 
+export const evtDistance: { [k in EventName]: number } = {
+  '100m': 100,
+  '200m': 200,
+  '400m': 400,
+  '600m': 600,
+  '800m': 800,
+  '1000m': 1000,
+  '1500m': 1500,
+  'Mile': 1609.344,
+  '2000m': 2000,
+  '3000m': 3000,
+  '2 miles': 1609.344 * 2,
+  '5000m': 5000,
+}
+
 export const similarEvents: { [k in EventName]?: EventName[] } = {
   '800m': ['600m', '1000m'],
   '1500m': ['Mile', '2000m'],
