@@ -127,7 +127,7 @@ const App = () => {
     }
     if (meet.event !== evt && !includeSimilarMarks) meet.filtered = 'Similar mark';
     if (!meet.filtered) {
-      if (maxIndoorMarks) {
+      if (limitIndoorMarks) {
         if (indoor) validIndoorMarks++;
         if (validIndoorMarks > maxIndoorMarks[evt]! && indoor) meet.filtered = `Too many indoor marks (max ${maxIndoorMarks[evt]!})`;
       }
