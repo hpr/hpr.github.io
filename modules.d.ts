@@ -1,4 +1,4 @@
-type WaCalculatorOptions = { edition: '2022'; gender: 'm' | 'w'; venueType: 'outdoor' | 'indoor'; electronicMeasurement: true; discipline: string };
+type WaCalculatorOptions = { edition: '2022'; gender: 'm' | 'f'; venueType: 'outdoor' | 'indoor'; electronicMeasurement: true; discipline: string };
 
 declare class WaCalculator {
   constructor(options: WaCalculatorOptions) {

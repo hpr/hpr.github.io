@@ -24,6 +24,7 @@ import React, { useEffect, useState } from 'react';
 import { countryCodes, fieldSizes, filterGroups, perfsToAverage } from './constants';
 import { Area, EventName, FilterGroup, GetCalendarCompetitionResults, Ranking, RankingsQuery, SexName, SimilarMarks } from './types';
 import { getMonths, getScores, getSimilarMarks, ordinal } from './util';
+import { WaCalculator } from '@glaivepro/wa-calculator';
 
 // import WBK from 'wikibase-sdk';
 // const wbk = WBK({
@@ -31,6 +32,8 @@ import { getMonths, getScores, getSimilarMarks, ordinal } from './util';
 //   sparqlEndpoint: 'https://query.wikidata.org/sparql',
 // });
 // console.log(wbk);
+
+console.log(WaCalculator)
 
 const App = () => {
   const [startDate] = useState('2021-07-14');

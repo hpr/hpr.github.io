@@ -91,7 +91,7 @@ export const getScores = (meet: GetCalendarCompetitionResults, times: { [k in Ev
       // TODO eliminate bumped out athletes? handle last place case?
       const points = new WaCalculator({
         edition: '2022',
-        gender: sex === 'men' ? 'm' : 'w',
+        gender: sex === 'men' ? 'm' : 'f',
         venueType: myEvent.event.includes('indoor') ? 'indoor' : 'outdoor',
         electronicMeasurement: true,
         discipline: evtToWaCalculatorDiscipline(evt),
@@ -162,7 +162,7 @@ export const getMonths = (fromDate: Date, toDate: Date) => {
 export const getSimilarMarks = (evt: EventName, sex: SexName, mark: string, generousConversion: boolean = false): SimilarMarks => {
   const score = new WaCalculator({
     edition: '2022',
-    gender: sex === 'men' ? 'm' : 'w',
+    gender: sex === 'men' ? 'm' : 'f',
     venueType: generousConversion ? 'indoor' : 'outdoor',
     electronicMeasurement: true,
     discipline: evt,
@@ -170,7 +170,7 @@ export const getSimilarMarks = (evt: EventName, sex: SexName, mark: string, gene
   const scoreForMile = generousConversion
     ? new WaCalculator({
         edition: '2022',
-        gender: sex === 'men' ? 'm' : 'w',
+        gender: sex === 'men' ? 'm' : 'f',
         venueType: 'outdoor',
         electronicMeasurement: true,
         discipline: evt,
@@ -181,7 +181,7 @@ export const getSimilarMarks = (evt: EventName, sex: SexName, mark: string, gene
     const targetScore = similarEvt === 'Mile' ? scoreForMile : score;
     const calc = new WaCalculator({
       edition: '2022',
-      gender: sex === 'men' ? 'm' : 'w',
+      gender: sex === 'men' ? 'm' : 'f',
       venueType: 'outdoor',
       electronicMeasurement: true,
       discipline: evtToWaCalculatorDiscipline(similarEvt as EventName),
