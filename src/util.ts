@@ -96,7 +96,7 @@ export const getScores = (meet: GetCalendarCompetitionResults, times: { [k in Ev
         electronicMeasurement: true,
         discipline: evtToWaCalculatorDiscipline(evt),
       }).evaluate(timeSecs[evt]);
-      const placeBonus = placeScoresFinal[rankingCategory][place - 1] ?? 0;
+      const placeBonus = placeScoresFinal[evt]![rankingCategory][place - 1] ?? 0;
       scores.push({
         score: points + placeBonus,
         event: evt,

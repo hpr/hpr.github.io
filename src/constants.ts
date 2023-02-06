@@ -1,5 +1,6 @@
-import { CompetitionGroup, EventName, FilterGroup } from './types';
+import { CompetitionGroup, EventName, FilterGroup, RankingCategory } from './types';
 
+// pg 3 https://www.worldathletics.org/download/download?filename=52dcc850-1eb9-47e7-805a-0617b3db9191.pdf&urlSlug=world-athletics-championships-oregon22-qual
 export const fieldSizes: { [k in EventName]?: number } = {
   '100m': 48,
   '200m': 56,
@@ -7,8 +8,10 @@ export const fieldSizes: { [k in EventName]?: number } = {
   '800m': 48,
   '1500m': 45,
   '5000m': 42,
+  '10000m': 27,
 };
 
+// 2.7 https://www.worldathletics.org/world-ranking-rules/track-field-events
 export const perfsToAverage: { [k in EventName]?: number } = {
   '100m': 5,
   '200m': 5,
@@ -16,6 +19,7 @@ export const perfsToAverage: { [k in EventName]?: number } = {
   '800m': 5,
   '1500m': 5,
   '5000m': 3,
+  '10000m': 2,
 };
 
 export const evtDistance: { [k in EventName]: number } = {
@@ -26,25 +30,33 @@ export const evtDistance: { [k in EventName]: number } = {
   '800m': 800,
   '1000m': 1000,
   '1500m': 1500,
-  'Mile': 1609.344,
+  Mile: 1609.344,
+  'Mile Road Race': 1609.344,
   '2000m': 2000,
   '3000m': 3000,
   '2 miles': 1609.344 * 2,
   '5000m': 5000,
-}
+  '5km Road Race': 5000,
+  '10000m': 10000,
+  '10km Road Race': 10000,
+};
 
+// https://www.worldathletics.org/world-ranking-rules/track-field-events
 export const similarEvents: { [k in EventName]?: EventName[] } = {
   '800m': ['600m', '1000m'],
-  '1500m': ['Mile', '2000m'],
-  '5000m': ['3000m', '2 miles'],
+  '1500m': ['Mile', 'Mile Road Race', '2000m'],
+  '5000m': ['3000m', '2 miles', '5km Road Race'],
+  '10000m': ['10km Road Race'],
 };
 
 export const waCalculatorDisciplines: { [k in EventName]?: string } = {
-  '2 miles': '2miles',
   Mile: '1mile',
+  '2 miles': '2miles',
+  '5km Road Race': '5km',
+  '10km Road Race': '10km',
 };
 
-export const placeScoresFinal = {
+const defaultPlaceScoresFinal = {
   OW: [375, 330, 300, 270, 250, 230, 215, 200, 130, 120, 110, 100, 95, 90, 85, 80],
   DF: [240, 210, 185, 170, 155, 145, 135, 125, 90, 80, 70, 60],
   GW: [200, 170, 150, 140, 130, 120, 110, 100, 70, 60, 50, 45],
@@ -57,6 +69,58 @@ export const placeScoresFinal = {
   F: [15, 10, 5],
 };
 
+const steeple5kPlaceScoresFinal = {
+  OW: [305, 270, 240, 220, 200, 185, 175, 165, 110, 100, 90, 80, 75, 70, 65, 60],
+  DF: [210, 185, 160, 145, 130, 120, 110, 100, 70, 60, 55, 50],
+  GW: [180, 160, 140, 120, 110, 100, 90, 80, 55, 45, 40, 35],
+  GL: [150, 135, 120, 105, 90, 80, 70, 60, 45, 40, 35, 30],
+  A: [100, 90, 80, 70, 60, 50, 45, 40],
+  B: [70, 60, 50, 45, 40, 35, 30, 25],
+  C: [50, 40, 35, 30, 26, 23, 20, 18],
+  D: [35, 27, 22, 19, 16, 14, 12, 10],
+  E: [20, 16, 12, 10, 9, 8],
+  F: [12, 7, 4],
+};
+
+export const placeScoresFinal: { [k in EventName]?: { [k in RankingCategory]: number[] } } = {
+  '600m': defaultPlaceScoresFinal,
+  '800m': defaultPlaceScoresFinal,
+  '1000m': defaultPlaceScoresFinal,
+  '1500m': defaultPlaceScoresFinal,
+  Mile: defaultPlaceScoresFinal,
+  'Mile Road Race': defaultPlaceScoresFinal,
+  '2000m': defaultPlaceScoresFinal,
+  '3000m': defaultPlaceScoresFinal,
+  '2 miles': defaultPlaceScoresFinal,
+  '5000m': steeple5kPlaceScoresFinal,
+  '5km Road Race': steeple5kPlaceScoresFinal,
+  '10000m': {
+    OW: [280, 250, 225, 205, 185, 170, 155, 145, 95, 85, 75, 65, 60, 55, 50, 40],
+    DF: [175, 150, 135, 120, 105, 95, 85, 75, 50, 40, 35, 30],
+    GW: [140, 120, 105, 90, 80, 70, 60, 50, 40, 32, 27, 24],
+    GL: [110, 90, 75, 65, 55, 50, 45, 40, 30, 25, 22, 20],
+    A: [80, 70, 60, 50, 45, 40, 35, 30],
+    B: [60, 50, 45, 40, 35, 30, 25, 20],
+    C: [45, 38, 32, 26, 22, 19, 17, 15],
+    D: [30, 22, 18, 16, 14, 12, 11, 10],
+    E: [20, 14, 10, 8, 7, 6],
+    F: [10, 6, 3],
+  },
+  '10km Road Race': {
+    OW: [95, 85, 75, 65, 55, 50, 45, 40, 35, 30, 25, 20],
+    DF: [70, 60, 50, 45, 40, 35, 30, 25],
+    GW: [60, 50, 45, 40, 35, 30, 25, 20],
+    GL: [45, 38, 32, 26, 22, 19, 17, 15],
+    A: [30, 22, 18, 16, 14, 12, 11, 10],
+    B: [20, 14, 20, 8, 7, 6],
+    C: [10, 6, 3],
+    D: [],
+    E: [],
+    F: [],
+  },
+};
+
+// TODO needs to be revised
 export const placeScoresHeatsFor10PlusFinal = {
   OW: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 95, 90, 85, 80, 75, 70],
   DF: [65, 65, 65, 65, 65, 65, 65, 65, 65, 65, 55, 50],

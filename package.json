@@ -6,7 +6,7 @@
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
-    "@glaivepro/wa-calculator": "github:hpr/wa-calculator#2022-tables",
+    "@glaivepro/wa-calculator": "^0.3.0",
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.6",
     "@mui/x-date-pickers": "^5.0.16",
@@ -58,6 +58,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-syntax-import-assertions": "^7.20.0",
     "@craco/craco": "^7.0.0",
     "@types/jsdom": "^20.0.1",
     "gh-pages": "^5.0.0"

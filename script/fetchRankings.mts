@@ -50,6 +50,22 @@ const rankQueries = [
     rankDate: '2022-06-26',
     limitByCountry: '3',
   },
+  {
+    event: '10000m',
+    sex: 'men',
+    regionType: 'world',
+    page: '1',
+    rankDate: '2022-06-26',
+    limitByCountry: '3',
+  },
+  {
+    event: '10000m',
+    sex: 'women',
+    regionType: 'world',
+    page: '1',
+    rankDate: '2022-06-26',
+    limitByCountry: '3',
+  },
 ];
 
 for (const query of rankQueries) {

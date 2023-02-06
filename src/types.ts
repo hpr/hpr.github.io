@@ -20,7 +20,23 @@ export type RankingsQuery = {
   limitByCountry: '3';
 };
 
-export type EventName = '100m' | '200m' | '400m' | '800m' | '1500m' | '5000m' | '600m' | '1000m' | 'Mile' | '2000m' | '3000m' | '2 miles';
+export type EventName =
+  | '100m'
+  | '200m'
+  | '400m'
+  | '600m'
+  | '800m'
+  | '1000m'
+  | '1500m'
+  | 'Mile'
+  | 'Mile Road Race'
+  | '2000m'
+  | '3000m'
+  | '2 miles'
+  | '5000m'
+  | '5km Road Race'
+  | '10000m'
+  | '10km Road Race';
 
 export type Competitor = {
   name: string;
