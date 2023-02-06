@@ -68,8 +68,15 @@ const rankQueries = [
   },
 ];
 
+const maxIndoorPerformances = (rankings: any) => {
+  const maxIndoors = Math.max(...rankings.flatMap((ath: any) => ath.RankingScoreCalculation.results.filter((res: { indoor: boolean }) => res.indoor).length));
+  return maxIndoors;
+};
+
 for (const query of rankQueries) {
   const { event, sex, regionType, page, rankDate, limitByCountry } = query;
+  // const { rankings } = JSON.parse(fs.readFileSync(`./public/rankings/${event}_${sex}.json`, 'utf-8'));
+  // console.log(maxIndoorPerformances(rankings));
   const { window } = new JSDOM(
     await (
       await fetch(`https://www.worldathletics.org/world-rankings/${event}/${sex}?` + new URLSearchParams({ regionType, page, rankDate, limitByCountry }))

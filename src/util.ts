@@ -65,6 +65,7 @@ export const getScores = (meet: GetCalendarCompetitionResults, times: { [k in Ev
     const myEvents = events.filter((ev) => eventPossessives.some((eventPossessive) => ev.event === eventPossessive));
     if (!myEvents.length) continue;
     for (const myEvent of myEvents) {
+      const isIndoor = myEvent.event.includes('indoor');
       const evt: EventName = myEvent.event.split(genderPossessive)[1].replace('indoor', '').trim() as EventName;
       const [heats, semis, finals] = ['Heat', 'Semifinal', 'Final'].map((round) => myEvent.races.filter((race) => race.race === round));
       let qualified = true;
@@ -92,7 +93,7 @@ export const getScores = (meet: GetCalendarCompetitionResults, times: { [k in Ev
       const points = new WaCalculator({
         edition: '2022',
         gender: sex === 'men' ? 'm' : 'f',
-        venueType: myEvent.event.includes('indoor') ? 'indoor' : 'outdoor',
+        venueType: isIndoor ? 'indoor' : 'outdoor',
         electronicMeasurement: true,
         discipline: evtToWaCalculatorDiscipline(evt),
       }).evaluate(timeSecs[evt]);
@@ -101,6 +102,7 @@ export const getScores = (meet: GetCalendarCompetitionResults, times: { [k in Ev
         score: points + placeBonus,
         event: evt,
         mark: secsToMark(timeSecs[evt]),
+        indoor: isIndoor,
         place,
         points,
         placeBonus,

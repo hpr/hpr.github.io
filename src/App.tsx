@@ -21,7 +21,7 @@ import {
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import React, { useEffect, useState } from 'react';
-import { countryCodes, fieldSizes, filterGroups, perfsToAverage } from './constants';
+import { countryCodes, fieldSizes, filterGroups, MAX_INDOOR_MEETS, perfsToAverage } from './constants';
 import { Area, EventName, FilterGroup, GetCalendarCompetitionResults, Ranking, RankingsQuery, SexName, SimilarMarks } from './types';
 import { getMonths, getScores, getSimilarMarks, ordinal } from './util';
 // import { WaCalculator } from '@glaivepro/wa-calculator';
@@ -55,6 +55,7 @@ const App = () => {
   const [rankingsQuery, setRankingsQuery] = useState<RankingsQuery | null>(null);
   const [results, setResults] = useState<{ [meetId: string]: GetCalendarCompetitionResults }>({});
   const [excludeIds, setExcludeIds] = useState<number[]>([]);
+  const [maxIndoorMeets, setMaxIndoorMeets] = useState<boolean>(true);
   const [meetScores, setMeetScores] = useState<ReturnType<typeof getScores>>([]);
   // const [competitions, setCompetitions] = useState<CalendarEvent[]>([]);
   const [filterChecks, setFilterChecks] = useState<{ [k in FilterGroup]: boolean }>(
@@ -109,10 +110,11 @@ const App = () => {
   const meetsToDisplay = [];
   const targetSize = perfsToAverage[evt]!;
   let numValidMeets = 0;
+  let validIndoorMeets = 0;
   for (let meet of meetScores) {
     meet = structuredClone(meet);
     if (numValidMeets === targetSize) break;
-    const { meetGroups, meetArea, meetVenue, meetId } = meet;
+    const { meetGroups, meetArea, meetVenue, meetId, indoor } = meet;
     if (excludeIds.includes(meetId)) meet.filtered = 'Manual';
     if (onlyMeetsInCountry && meet.meetVenue.endsWith(`(${country})`)) meet.filtered = 'Out of country';
     for (const key in filterChecks) {
@@ -124,7 +126,13 @@ const App = () => {
       }
     }
     if (meet.event !== evt && !includeSimilarMarks) meet.filtered = 'Similar mark';
-    if (!meet.filtered) numValidMeets++;
+    if (!meet.filtered) {
+      if (maxIndoorMeets) {
+        if (indoor) validIndoorMeets++;
+        if (validIndoorMeets > MAX_INDOOR_MEETS && indoor) meet.filtered = `Too many indoor meets (max ${MAX_INDOOR_MEETS})`;
+      }
+      if (!meet.filtered) numValidMeets++;
+    }
     meetsToDisplay.push(meet);
   }
 
@@ -140,7 +148,7 @@ const App = () => {
         <FormControl>
           <InputLabel id="event-label">Event</InputLabel>
           <Select labelId="event-label" label="Event" value={evt} onChange={(e) => setEvt(e.target.value as EventName)}>
-            {['800m', '1500m', '5000m'].map((evt) => (
+            {['800m', '1500m', '5000m'/*, '10000m'*/].map((evt) => (
               <MenuItem key={evt} value={evt}>
                 {evt}
               </MenuItem>
@@ -218,6 +226,10 @@ const App = () => {
           <FormControlLabel
             control={<Checkbox size="small" value={altitudeConversion} onChange={(e) => setAltitudeConversion(e.target.checked)} />}
             label="Altitude-adjust performances"
+          />
+          <FormControlLabel
+            control={<Checkbox size="small" defaultChecked value={maxIndoorMeets} onChange={(e) => setMaxIndoorMeets(e.target.checked)} />}
+            label={`Only use max ${MAX_INDOOR_MEETS} indoor meets (per WA rules)`}
           />
           <FormControlLabel
             control={<Checkbox size="small" value={showExcludedMeets} onChange={(e) => setShowExcludedMeets(e.target.checked)} />}
