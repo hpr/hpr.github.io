@@ -21,7 +21,7 @@ import {
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import React, { useEffect, useState } from 'react';
-import { countryCodes, fieldSizes, filterGroups, MAX_INDOOR_MEETS, perfsToAverage } from './constants';
+import { countryCodes, fieldSizes, filterGroups, maxIndoorMarks, perfsToAverage } from './constants';
 import { Area, EventName, FilterGroup, GetCalendarCompetitionResults, Ranking, RankingsQuery, SexName, SimilarMarks } from './types';
 import { getMonths, getScores, getSimilarMarks, ordinal } from './util';
 // import { WaCalculator } from '@glaivepro/wa-calculator';
@@ -54,8 +54,8 @@ const App = () => {
   const [rankings, setRankings] = useState<Ranking[]>([]);
   const [rankingsQuery, setRankingsQuery] = useState<RankingsQuery | null>(null);
   const [results, setResults] = useState<{ [meetId: string]: GetCalendarCompetitionResults }>({});
-  const [excludeIds, setExcludeIds] = useState<number[]>([]);
-  const [maxIndoorMeets, setMaxIndoorMeets] = useState<boolean>(true);
+  const [excludeIds, setExcludeIds] = useState<number[]>([]); // TODO use more specific id
+  const [limitIndoorMarks, setLimitIndoorMarks] = useState<boolean>(true);
   const [meetScores, setMeetScores] = useState<ReturnType<typeof getScores>>([]);
   // const [competitions, setCompetitions] = useState<CalendarEvent[]>([]);
   const [filterChecks, setFilterChecks] = useState<{ [k in FilterGroup]: boolean }>(
@@ -110,7 +110,7 @@ const App = () => {
   const meetsToDisplay = [];
   const targetSize = perfsToAverage[evt]!;
   let numValidMeets = 0;
-  let validIndoorMeets = 0;
+  let validIndoorMarks = 0;
   for (let meet of meetScores) {
     meet = structuredClone(meet);
     if (numValidMeets === targetSize) break;
@@ -127,9 +127,9 @@ const App = () => {
     }
     if (meet.event !== evt && !includeSimilarMarks) meet.filtered = 'Similar mark';
     if (!meet.filtered) {
-      if (maxIndoorMeets) {
-        if (indoor) validIndoorMeets++;
-        if (validIndoorMeets > MAX_INDOOR_MEETS && indoor) meet.filtered = `Too many indoor meets (max ${MAX_INDOOR_MEETS})`;
+      if (maxIndoorMarks) {
+        if (indoor) validIndoorMarks++;
+        if (validIndoorMarks > maxIndoorMarks[evt]! && indoor) meet.filtered = `Too many indoor marks (max ${maxIndoorMarks[evt]!})`;
       }
       if (!meet.filtered) numValidMeets++;
     }
@@ -228,8 +228,8 @@ const App = () => {
             label="Altitude-adjust performances"
           />
           <FormControlLabel
-            control={<Checkbox size="small" defaultChecked value={maxIndoorMeets} onChange={(e) => setMaxIndoorMeets(e.target.checked)} />}
-            label={`Only use max ${MAX_INDOOR_MEETS} indoor meets (per WA rules)`}
+            control={<Checkbox size="small" defaultChecked value={limitIndoorMarks} onChange={(e) => setLimitIndoorMarks(e.target.checked)} />}
+            label={`Limit ${maxIndoorMarks[evt]!} indoor marks (per WA rules)`}
           />
           <FormControlLabel
             control={<Checkbox size="small" value={showExcludedMeets} onChange={(e) => setShowExcludedMeets(e.target.checked)} />}

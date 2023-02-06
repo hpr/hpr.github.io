@@ -1,6 +1,11 @@
 import { CompetitionGroup, EventName, FilterGroup, RankingCategory } from './types';
 
-export const MAX_INDOOR_MEETS = 2;
+export const maxIndoorMarks: { [k in EventName]?: number } = {
+  '800m': 2,
+  '1500m': 2,
+  '5000m': 1,
+  '10000m': 0,
+};
 
 // pg 3 https://www.worldathletics.org/download/download?filename=52dcc850-1eb9-47e7-805a-0617b3db9191.pdf&urlSlug=world-athletics-championships-oregon22-qual
 export const fieldSizes: { [k in EventName]?: number } = {
