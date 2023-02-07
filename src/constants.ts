@@ -1,6 +1,6 @@
 import { CompetitionGroup, EventName, FilterGroup, RankingCategory } from './types';
 
-export const maxIndoorMarks: { [k in EventName]?: number } = {
+export const maxSimilarMarks: { [k in EventName]?: number } = {
   '800m': 2,
   '1500m': 2,
   '5000m': 1,
