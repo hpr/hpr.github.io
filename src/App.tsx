@@ -114,7 +114,7 @@ const App = () => {
   for (let meet of meetScores) {
     meet = structuredClone(meet);
     if (numValidMeets === targetSize) break;
-    const { meetGroups, meetArea, meetVenue, meetId, event } = meet;
+    const { meetGroups, meetArea, meetVenue, meetId, event, indoor } = meet;
     if (excludeIds.includes(meetId)) meet.filtered = 'Manual';
     if (onlyMeetsInCountry && meet.meetVenue.endsWith(`(${country})`)) meet.filtered = 'Out of country';
     for (const key in filterChecks) {
@@ -128,8 +128,9 @@ const App = () => {
     if (event !== evt && !includeSimilarMarks) meet.filtered = 'Similar mark';
     if (!meet.filtered) {
       if (limitSimilarMarks) {
-        if (event !== evt) validSimilarMarks++;
-        if (validSimilarMarks > maxSimilarMarks[evt]! && event !== evt) meet.filtered = `Too many similar or indoor marks (max ${maxSimilarMarks[evt]!})`;
+        const isDifferentEvt = indoor || event !== evt;
+        if (isDifferentEvt) validSimilarMarks++;
+        if (validSimilarMarks > maxSimilarMarks[evt]! && isDifferentEvt) meet.filtered = `Too many similar or indoor marks (max ${maxSimilarMarks[evt]!})`;
       }
       if (!meet.filtered) numValidMeets++;
     }
