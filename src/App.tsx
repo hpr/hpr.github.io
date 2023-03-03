@@ -332,7 +332,7 @@ const App = () => {
           )}
         </Typography>
         <div>
-          Contact: Harry Prevor, <Link href="mailto:habs@sdf.org">habs@sdf.org</Link>
+          Contact: <Link href="mailto:%22Harry%20Prevor%22%3chabs@sdf.org%3e">habs@sdf.org</Link>
         </div>
       </Box>
     </div>
